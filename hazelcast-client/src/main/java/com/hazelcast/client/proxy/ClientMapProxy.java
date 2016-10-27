@@ -16,6 +16,7 @@
 
 package com.hazelcast.client.proxy;
 
+import com.hazelcast.aggregation.Aggregator;
 import com.hazelcast.client.impl.ClientLockReferenceIdGenerator;
 import com.hazelcast.client.impl.ClientMessageDecoder;
 import com.hazelcast.client.impl.protocol.ClientMessage;
@@ -117,6 +118,7 @@ import com.hazelcast.mapreduce.aggregation.Supplier;
 import com.hazelcast.monitor.LocalMapStats;
 import com.hazelcast.monitor.impl.LocalMapStatsImpl;
 import com.hazelcast.nio.serialization.Data;
+import com.hazelcast.projection.Projection;
 import com.hazelcast.query.PagingPredicate;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.spi.impl.UnmodifiableLazyList;
@@ -1283,6 +1285,31 @@ public class ClientMapProxy<K, V>
         MapExecuteWithPredicateCodec.ResponseParameters resultParameters = MapExecuteWithPredicateCodec.decodeResponse(response);
         return prepareResult(resultParameters.response);
     }
+
+    @Override
+    public <R> R aggregate(Aggregator<R, K, V> aggregator) {
+        // TODO client side
+        return null;
+    }
+
+    @Override
+    public <R> R aggregate(Aggregator<R, K, V> aggregator, Predicate<K, V> predicate) {
+        // TODO client side
+        return null;
+    }
+
+    @Override
+    public <R> Collection<R> project(Projection<Entry<K, V>, R> projection) {
+        // TODO client side
+        return null;
+    }
+
+    @Override
+    public <R> Collection<R> project(Projection<Entry<K, V>, R> projection, Predicate<K, V> predicate) {
+        // TODO client side
+        return null;
+    }
+
 
     @Override
     public <SuppliedValue, Result> Result aggregate(Supplier<K, V, SuppliedValue> supplier,

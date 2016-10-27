@@ -16,53 +16,34 @@
 
 package com.hazelcast.map.impl.query;
 
-import com.hazelcast.map.QueryResultSizeExceededException;
 import com.hazelcast.map.impl.MapDataSerializerHook;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.Data;
 import com.hazelcast.nio.serialization.IdentifiedDataSerializable;
-import com.hazelcast.query.impl.QueryableEntry;
-import com.hazelcast.util.IterationType;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
- * Contains the result of a query evaluation.
+ * Contains the result of a projection evaluation.
  * <p>
- * A QueryResults is a collections of {@link QueryResultRow} instances.
+ * A ProjectionResult is a collections of {@link Data} instances.
  */
-public class QueryResult implements Result<QueryResult>, IdentifiedDataSerializable, Iterable<QueryResultRow> {
+public class ProjectionResult implements Result<ProjectionResult>, IdentifiedDataSerializable {
 
-    private final Collection<QueryResultRow> rows = new LinkedList<QueryResultRow>();
-
+    private final Collection<Data> rows;
     private Collection<Integer> partitionIds;
 
-    private transient long resultLimit;
-    private transient long resultSize;
-    private IterationType iterationType;
-
-    public QueryResult() {
-        resultLimit = Long.MAX_VALUE;
+    public ProjectionResult() {
+        this.rows = new LinkedList<Data>();
     }
 
-    public QueryResult(IterationType iterationType, long resultLimit) {
-        this.resultLimit = resultLimit;
-        this.iterationType = iterationType;
-    }
-
-    // for testing
-    IterationType getIterationType() {
-        return iterationType;
-    }
-
-    @Override
-    public Iterator<QueryResultRow> iterator() {
-        return rows.iterator();
+    public ProjectionResult(List<Data> rows) {
+        this.rows = rows;
     }
 
     public int size() {
@@ -73,52 +54,12 @@ public class QueryResult implements Result<QueryResult>, IdentifiedDataSerializa
         return rows.isEmpty();
     }
 
-    // just for testing
-    long getResultLimit() {
-        return resultLimit;
-    }
-
-    public void addRow(QueryResultRow row) {
-        rows.add(row);
-    }
-
-    public void addAll(Collection<QueryableEntry> entries) {
-        for (QueryableEntry entry : entries) {
-            add(entry);
-        }
-    }
-
-    public void add(QueryableEntry entry) {
-        if (++resultSize > resultLimit) {
-            throw new QueryResultSizeExceededException();
-        }
-
-        Data key = null;
-        Data value = null;
-        switch (iterationType) {
-            case KEY:
-                key = entry.getKeyData();
-                break;
-            case VALUE:
-                value = entry.getValueData();
-                break;
-            case ENTRY:
-                key = entry.getKeyData();
-                value = entry.getValueData();
-                break;
-            default:
-                throw new IllegalStateException("Unknown iterationtype:" + iterationType);
-        }
-
-        rows.add(new QueryResultRow(key, value));
-    }
-
     public Collection<Integer> getPartitionIds() {
         return partitionIds;
     }
 
     @Override
-    public void combine(QueryResult result) {
+    public void combine(ProjectionResult result) {
         if (partitionIds == null) {
             partitionIds = new ArrayList<Integer>(result.getPartitionIds().size());
         }
@@ -130,7 +71,7 @@ public class QueryResult implements Result<QueryResult>, IdentifiedDataSerializa
         this.partitionIds = partitionIds;
     }
 
-    public Collection<QueryResultRow> getRows() {
+    public Collection<Data> getRows() {
         return rows;
     }
 
@@ -141,7 +82,7 @@ public class QueryResult implements Result<QueryResult>, IdentifiedDataSerializa
 
     @Override
     public int getId() {
-        return MapDataSerializerHook.QUERY_RESULT;
+        return MapDataSerializerHook.PROJECTION_RESULT;
     }
 
     @Override
@@ -154,13 +95,11 @@ public class QueryResult implements Result<QueryResult>, IdentifiedDataSerializa
             }
         }
 
-        out.writeByte(iterationType.getId());
-
         int resultSize = rows.size();
         out.writeInt(resultSize);
         if (resultSize > 0) {
-            for (QueryResultRow row : rows) {
-                row.writeData(out);
+            for (Data row : rows) {
+                out.writeData(row);
             }
         }
     }
@@ -175,15 +114,13 @@ public class QueryResult implements Result<QueryResult>, IdentifiedDataSerializa
             }
         }
 
-        iterationType = IterationType.getById(in.readByte());
-
         int resultSize = in.readInt();
         if (resultSize > 0) {
             for (int i = 0; i < resultSize; i++) {
-                QueryResultRow row = new QueryResultRow();
-                row.readData(in);
+                Data row = in.readData();
                 rows.add(row);
             }
         }
     }
+
 }

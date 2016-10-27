@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package com.hazelcast.map.impl.query;
+package com.hazelcast.aggregation;
 
 /**
- * Responsible for executing queries on the IMap.
+ * A utility class to create {@link com.hazelcast.aggregation.Aggregator} instances.
  */
-public interface MapQueryEngine {
+public final class Aggregators {
 
-    /**
-     * Executes the given query on the given target.
-     *
-     * @param query  query to execute
-     * @param target target where to execute the query
-     * @param <T>    Type of the result
-     * @return Result of the specific type
-     */
-    <T extends Result> T execute(Query query, Target target);
+    private Aggregators() {
+    }
 
 }

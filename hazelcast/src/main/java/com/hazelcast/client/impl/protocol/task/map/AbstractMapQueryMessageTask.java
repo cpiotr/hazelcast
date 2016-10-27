@@ -22,6 +22,7 @@ import com.hazelcast.core.Member;
 import com.hazelcast.instance.Node;
 import com.hazelcast.map.QueryResultSizeExceededException;
 import com.hazelcast.map.impl.MapService;
+import com.hazelcast.map.impl.query.Query;
 import com.hazelcast.map.impl.query.QueryOperation;
 import com.hazelcast.map.impl.query.QueryPartitionOperation;
 import com.hazelcast.map.impl.query.QueryResult;
@@ -109,9 +110,13 @@ public abstract class AbstractMapQueryMessageTask<P> extends AbstractCallableMes
         final InternalOperationService operationService = nodeEngine.getOperationService();
         for (Member member : members) {
             try {
+                Query query = Query.of().mapName(getDistributedObjectName())
+                        .predicate(predicate)
+                        .iterationType(getIterationType())
+                        .build();
                 Future future = operationService.createInvocationBuilder(SERVICE_NAME,
-                        new QueryOperation(getDistributedObjectName(), predicate, getIterationType()), member.getAddress())
-                                                .invoke();
+                        new QueryOperation(query), member.getAddress())
+                        .invoke();
                 futures.add(future);
             } catch (Throwable t) {
                 if (t.getCause() instanceof QueryResultSizeExceededException) {
@@ -179,9 +184,12 @@ public abstract class AbstractMapQueryMessageTask<P> extends AbstractCallableMes
                                                        Predicate predicate) {
 
         final InternalOperationService operationService = nodeEngine.getOperationService();
+        Query query = Query.of().mapName(getDistributedObjectName())
+                .predicate(predicate)
+                .iterationType(getIterationType())
+                .build();
         for (Integer partitionId : missingPartitionsList) {
-            QueryPartitionOperation queryPartitionOperation = new QueryPartitionOperation(
-                    getDistributedObjectName(), predicate, getIterationType());
+            QueryPartitionOperation queryPartitionOperation = new QueryPartitionOperation(query);
             queryPartitionOperation.setPartitionId(partitionId);
             try {
                 Future future = operationService.invokeOnPartition(SERVICE_NAME,

@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-package com.hazelcast.map.impl.query;
+package com.hazelcast.projection;
+
+import java.io.Serializable;
 
 /**
- * Responsible for executing queries on the IMap.
+ * Enables transforming object into other objects.
+ * Examplay usage scenario is the project() method of the {@link com.hazelcast.core.IMap}
+ * <p>
+ * Only 1:1 transformations allowed. Use an Aggregator to perform N:1 aggregations.
+ *
+ * @param <I> input type
+ * @param <O> output type
  */
-public interface MapQueryEngine {
+public abstract class Projection<I, O> implements Serializable {
 
     /**
-     * Executes the given query on the given target.
+     * Transforms the input object into the output object.
      *
-     * @param query  query to execute
-     * @param target target where to execute the query
-     * @param <T>    Type of the result
-     * @return Result of the specific type
+     * @param input object.
+     * @return the output object.
      */
-    <T extends Result> T execute(Query query, Target target);
+    public abstract O transform(I input);
 
 }

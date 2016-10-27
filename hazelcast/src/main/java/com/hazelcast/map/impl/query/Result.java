@@ -16,19 +16,21 @@
 
 package com.hazelcast.map.impl.query;
 
-/**
- * Responsible for executing queries on the IMap.
- */
-public interface MapQueryEngine {
+import com.hazelcast.nio.serialization.IdentifiedDataSerializable;
 
-    /**
-     * Executes the given query on the given target.
-     *
-     * @param query  query to execute
-     * @param target target where to execute the query
-     * @param <T>    Type of the result
-     * @return Result of the specific type
-     */
-    <T extends Result> T execute(Query query, Target target);
+import java.util.Collection;
+
+/**
+ * Result of a Query. Each query type implements its own Result.
+ *
+ * @param <T> type of the result for the concrete implementations
+ */
+public interface Result<T extends Result> extends IdentifiedDataSerializable {
+
+    Collection<Integer> getPartitionIds();
+
+    void setPartitionIds(Collection<Integer> partitionIds);
+
+    void combine(T result);
 
 }

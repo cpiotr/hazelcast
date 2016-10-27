@@ -16,19 +16,25 @@
 
 package com.hazelcast.map.impl.query;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Responsible for executing queries on the IMap.
+ * Holds a registry of ResultProcessors for Result type. Enables running the post-processing in a generic way.
  */
-public interface MapQueryEngine {
+public class ResultProcessorRegistry {
 
-    /**
-     * Executes the given query on the given target.
-     *
-     * @param query  query to execute
-     * @param target target where to execute the query
-     * @param <T>    Type of the result
-     * @return Result of the specific type
-     */
-    <T extends Result> T execute(Query query, Target target);
+    private final Map<Class<? extends Result>, ResultProcessor> processors;
 
+    public ResultProcessorRegistry() {
+        this.processors = new HashMap<Class<? extends Result>, ResultProcessor>();
+    }
+
+    public void registerProcessor(Class<? extends Result> clazz, ResultProcessor processor) {
+        processors.put(clazz, processor);
+    }
+
+    public ResultProcessor get(Class<? extends Result> clazz) {
+        return processors.get(clazz);
+    }
 }

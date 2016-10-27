@@ -16,19 +16,17 @@
 
 package com.hazelcast.map.impl.query;
 
-/**
- * Responsible for executing queries on the IMap.
- */
-public interface MapQueryEngine {
+import com.hazelcast.query.Predicate;
+import com.hazelcast.query.impl.QueryableEntry;
 
-    /**
-     * Executes the given query on the given target.
-     *
-     * @param query  query to execute
-     * @param target target where to execute the query
-     * @param <T>    Type of the result
-     * @return Result of the specific type
-     */
-    <T extends Result> T execute(Query query, Target target);
+import java.util.Collection;
+
+/**
+ * Responsible for executing a full partition scan for the given partitions.
+ * May execute the scan in the calling thread or delegate to other thread - it depends on the implementation.
+ */
+public interface MapPartitionScanExecutor {
+
+    Collection<QueryableEntry> execute(String mapName, Predicate predicate, Collection<Integer> partitions);
 
 }

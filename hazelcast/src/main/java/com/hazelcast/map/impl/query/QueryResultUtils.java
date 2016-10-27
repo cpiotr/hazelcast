@@ -40,4 +40,18 @@ public final class QueryResultUtils {
             return new QueryResultCollection(ss, iterationType, false, unique, queryResult);
         }
     }
+
+    public static Set transformToSet(
+            SerializationService ss, ProjectionResult projectionResult, Predicate predicate, boolean unique) {
+        if (predicate instanceof PagingPredicate) {
+            Set result = new ProjectionResultCollection(ss, unique, projectionResult.getRows());
+            // TODO figure out this paging shit.
+            // return getSortedQueryResultSet(new ArrayList(result), (PagingPredicate) predicate, iterationType);
+            return null;
+        } else {
+            return new ProjectionResultCollection(ss, unique, projectionResult.getRows());
+        }
+    }
+
+
 }
