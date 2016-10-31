@@ -46,8 +46,6 @@ import com.hazelcast.map.impl.query.MapPartitionScanSameThreadExecutor;
 import com.hazelcast.map.impl.query.MapQueryEngine;
 import com.hazelcast.map.impl.query.MapQueryEngineImpl;
 import com.hazelcast.map.impl.query.MapQueryRunner;
-import com.hazelcast.map.impl.query.ProjectionResult;
-import com.hazelcast.map.impl.query.ProjectionResultProcessor;
 import com.hazelcast.map.impl.query.QueryResult;
 import com.hazelcast.map.impl.query.QueryResultProcessor;
 import com.hazelcast.map.impl.query.ResultProcessorRegistry;
@@ -192,14 +190,13 @@ class MapServiceContextImpl implements MapServiceContext {
 
     private ResultProcessorRegistry createResultProcessorRegistry(SerializationService ss) {
         ResultProcessorRegistry registry = new ResultProcessorRegistry();
-        registry.registerProcessor(QueryResult.class, createQueryResultProcessor());
+        registry.registerProcessor(QueryResult.class, createQueryResultProcessor(ss));
         registry.registerProcessor(AggregationResult.class, createAggregationResultProcessor(ss));
-        registry.registerProcessor(ProjectionResult.class, createProjectionResultProcessor(ss));
         return registry;
     }
 
-    private QueryResultProcessor createQueryResultProcessor() {
-        return new QueryResultProcessor();
+    private QueryResultProcessor createQueryResultProcessor(SerializationService ss) {
+        return new QueryResultProcessor(ss);
     }
 
     private AggregationResultProcessor createAggregationResultProcessor(SerializationService ss) {
@@ -213,10 +210,6 @@ class MapServiceContextImpl implements MapServiceContext {
         }
 
         return new AggregationResultProcessor(accumulationExecutor);
-    }
-
-    private ProjectionResultProcessor createProjectionResultProcessor(SerializationService ss) {
-        return new ProjectionResultProcessor(ss);
     }
 
     private PartitionContainer[] createPartitionContainers() {

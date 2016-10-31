@@ -74,9 +74,7 @@ public class Query implements IdentifiedDataSerializable {
     }
 
     public Class<? extends Result> getResultType() {
-        if (isProjectionQuery()) {
-            return ProjectionResult.class;
-        } else if (isAggregationQuery()) {
+        if (isAggregationQuery()) {
             return AggregationResult.class;
         } else {
             return QueryResult.class;

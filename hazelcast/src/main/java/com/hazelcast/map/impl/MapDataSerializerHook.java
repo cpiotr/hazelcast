@@ -102,7 +102,6 @@ import com.hazelcast.map.impl.operation.TryPutOperation;
 import com.hazelcast.map.impl.operation.TryRemoveOperation;
 import com.hazelcast.map.impl.operation.WriteBehindStateHolder;
 import com.hazelcast.map.impl.query.AggregationResult;
-import com.hazelcast.map.impl.query.ProjectionResult;
 import com.hazelcast.map.impl.query.Query;
 import com.hazelcast.map.impl.query.QueryEventFilter;
 import com.hazelcast.map.impl.query.QueryOperation;
@@ -254,9 +253,8 @@ public final class MapDataSerializerHook implements DataSerializerHook {
     public static final int MAP_REPLICATION_STATE_HOLDER = 113;
     public static final int WRITE_BEHIND_STATE_HOLDER = 114;
     public static final int AGGREGATION_RESULT = 115;
-    public static final int PROJECTION_RESULT = 116;
-    public static final int QUERY = 117;
-    public static final int TARGET = 118;
+    public static final int QUERY = 116;
+    public static final int TARGET = 117;
 
     private static final int LEN = TARGET + 1;
 
@@ -847,11 +845,6 @@ public final class MapDataSerializerHook implements DataSerializerHook {
         constructors[AGGREGATION_RESULT] = new ConstructorFunction<Integer, IdentifiedDataSerializable>() {
             public IdentifiedDataSerializable createNew(Integer arg) {
                 return new AggregationResult();
-            }
-        };
-        constructors[PROJECTION_RESULT] = new ConstructorFunction<Integer, IdentifiedDataSerializable>() {
-            public IdentifiedDataSerializable createNew(Integer arg) {
-                return new ProjectionResult();
             }
         };
         constructors[QUERY] = new ConstructorFunction<Integer, IdentifiedDataSerializable>() {

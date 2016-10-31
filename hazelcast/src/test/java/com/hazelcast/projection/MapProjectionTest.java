@@ -158,7 +158,7 @@ public class MapProjectionTest extends HazelcastTestSupport {
         return instance.getMap("aggr");
     }
 
-    private static class Person implements DataSerializable {
+    public static class Person implements DataSerializable {
         public double age;
 
         public Person() {
@@ -179,14 +179,14 @@ public class MapProjectionTest extends HazelcastTestSupport {
         }
     }
 
-    private static class ExceptionThrowingProjection extends Projection {
+    public static class ExceptionThrowingProjection extends Projection {
         @Override
         public Object transform(Object input) {
             throw new RuntimeException("transform() exception");
         }
     }
 
-    private static class NullReturningProjection extends Projection {
+    public static class NullReturningProjection extends Projection {
         @Override
         public Object transform(Object input) {
             return null;
@@ -194,14 +194,14 @@ public class MapProjectionTest extends HazelcastTestSupport {
     }
 
 
-    private static class PrimitiveValueIncrementingProjection extends Projection<Map.Entry<String, Double>, Double> {
+    public static class PrimitiveValueIncrementingProjection extends Projection<Map.Entry<String, Double>, Double> {
         @Override
         public Double transform(Map.Entry<String, Double> input) {
             return input.getValue() + 1.0d;
         }
     }
 
-    private static class ObjectValueIncrementingProjection extends Projection<Map.Entry<String, Person>, Double> {
+    public static class ObjectValueIncrementingProjection extends Projection<Map.Entry<String, Person>, Double> {
         @Override
         public Double transform(Map.Entry<String, Person> input) {
             return input.getValue().age + 1.0d;

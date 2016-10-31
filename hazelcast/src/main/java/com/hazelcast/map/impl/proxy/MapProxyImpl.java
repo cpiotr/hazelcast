@@ -32,7 +32,6 @@ import com.hazelcast.map.impl.SimpleEntryView;
 import com.hazelcast.map.impl.iterator.MapPartitionIterator;
 import com.hazelcast.map.impl.query.AggregationResult;
 import com.hazelcast.map.impl.query.MapQueryEngine;
-import com.hazelcast.map.impl.query.ProjectionResult;
 import com.hazelcast.map.impl.query.Query;
 import com.hazelcast.map.impl.query.QueryResult;
 import com.hazelcast.map.impl.query.QueryResultUtils;
@@ -797,11 +796,12 @@ public class MapProxyImpl<K, V> extends MapProxySupport implements IMap<K, V>, I
         Query query = Query.of()
                 .mapName(getName())
                 .predicate(TruePredicate.INSTANCE)
-                .iterationType(IterationType.ENTRY)
+                .iterationType(IterationType.VALUE)
                 .projection(projection)
                 .build();
-        ProjectionResult result = queryEngine.execute(query, Target.ALL_NODES);
-        return QueryResultUtils.transformToSet(serializationService, result, TruePredicate.INSTANCE, false);
+        QueryResult result = queryEngine.execute(query, Target.ALL_NODES);
+        return QueryResultUtils.transformToSet(serializationService, result, TruePredicate.INSTANCE,
+                IterationType.VALUE, false);
     }
 
     @Override
@@ -815,12 +815,13 @@ public class MapProxyImpl<K, V> extends MapProxySupport implements IMap<K, V>, I
         Query query = Query.of()
                 .mapName(getName())
                 .predicate(predicate)
-                .iterationType(IterationType.ENTRY)
+                .iterationType(IterationType.VALUE)
                 .projection(projection)
                 .build();
         queryEngine.execute(query, Target.ALL_NODES);
-        ProjectionResult result = queryEngine.execute(query, Target.ALL_NODES);
-        return QueryResultUtils.transformToSet(serializationService, result, TruePredicate.INSTANCE, false);
+        QueryResult result = queryEngine.execute(query, Target.ALL_NODES);
+        return QueryResultUtils.transformToSet(serializationService, result, predicate,
+                IterationType.VALUE, false);
     }
 
     @Override
