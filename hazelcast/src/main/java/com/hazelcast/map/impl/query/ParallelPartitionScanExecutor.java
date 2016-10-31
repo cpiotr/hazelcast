@@ -37,26 +37,26 @@ import static com.hazelcast.util.SortingUtil.getSortedSubList;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * Implementation of the {@link MapPartitionScanExecutor} which executes the partition scan in a parallel-fashion
+ * Implementation of the {@link PartitionScanExecutor} which executes the partition scan in a parallel-fashion
  * delegating to the underlying executor.
  */
-public class MapPartitionScanParallelExecutor implements MapPartitionScanExecutor {
+public class ParallelPartitionScanExecutor implements PartitionScanExecutor {
 
     protected static final int QUERY_EXECUTION_TIMEOUT_MINUTES = 5;
 
-    private final MapPartitionScanRunner partitionScanRunner;
+    private final PartitionScanRunner partitionScanRunner;
     private final ManagedExecutorService executor;
     private final int timeoutInMinutes;
 
-    public MapPartitionScanParallelExecutor(
-            MapPartitionScanRunner partitionScanRunner, ManagedExecutorService executor, int timeoutInMinutes) {
+    public ParallelPartitionScanExecutor(
+            PartitionScanRunner partitionScanRunner, ManagedExecutorService executor, int timeoutInMinutes) {
         this.partitionScanRunner = partitionScanRunner;
         this.executor = executor;
         this.timeoutInMinutes = timeoutInMinutes;
     }
 
-    public MapPartitionScanParallelExecutor(
-            MapPartitionScanRunner partitionScanRunner, ManagedExecutorService executor) {
+    public ParallelPartitionScanExecutor(
+            PartitionScanRunner partitionScanRunner, ManagedExecutorService executor) {
         this.partitionScanRunner = partitionScanRunner;
         this.executor = executor;
         this.timeoutInMinutes = QUERY_EXECUTION_TIMEOUT_MINUTES;
@@ -119,7 +119,7 @@ public class MapPartitionScanParallelExecutor implements MapPartitionScanExecuto
 
         @Override
         public Collection<QueryableEntry> call() throws Exception {
-            return partitionScanRunner.runUsingPartitionScanOnSinglePartition(name, predicate, partition);
+            return partitionScanRunner.run(name, predicate, partition);
         }
     }
 

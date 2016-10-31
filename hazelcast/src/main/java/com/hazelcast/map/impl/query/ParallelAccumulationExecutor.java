@@ -35,7 +35,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
  * Entries are split into chunks and each chunk is sent as a task to the underlying executor.
  * At the end the result is merged to a single AggregationResult.
  */
-public class AccumulationParallelExecutor implements AccumulationExecutor {
+public class ParallelAccumulationExecutor implements AccumulationExecutor {
 
     private static final int THREAD_SPLIT_COUNT = 8;
     private static final int ACCUMULATION_EXECUTION_TIMEOUT_MINUTES = 5;
@@ -43,7 +43,7 @@ public class AccumulationParallelExecutor implements AccumulationExecutor {
     private final ManagedExecutorService executor;
     private final SerializationService serializationService;
 
-    public AccumulationParallelExecutor(ManagedExecutorService executor, SerializationService serializationService) {
+    public ParallelAccumulationExecutor(ManagedExecutorService executor, SerializationService serializationService) {
         this.executor = executor;
         this.serializationService = serializationService;
     }

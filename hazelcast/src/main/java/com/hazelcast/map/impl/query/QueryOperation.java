@@ -44,7 +44,7 @@ public class QueryOperation extends MapOperation implements ReadonlyOperation {
 
     @Override
     public void run() throws Exception {
-        MapQueryRunner queryRunner = mapServiceContext.getMapQueryRunner(getName());
+        QueryRunner queryRunner = mapServiceContext.getMapQueryRunner(getName());
         result = queryRunner.run(query);
     }
 

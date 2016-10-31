@@ -25,11 +25,11 @@ import java.util.Collection;
 /**
  * Implementation of the {@link AccumulationExecutor} that runs the accumulation in the calling thread in a sequential fashion.
  */
-public class AccumulationSameThreadExecutor implements AccumulationExecutor {
+public class CallerRunsAccumulationExecutor implements AccumulationExecutor {
 
     private SerializationService serializationService;
 
-    public AccumulationSameThreadExecutor(SerializationService serializationService) {
+    public CallerRunsAccumulationExecutor(SerializationService serializationService) {
         this.serializationService = serializationService;
     }
 

@@ -22,11 +22,11 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(HazelcastSerialClassRunner.class)
 @Category({QuickTest.class})
-public class MapQueryRunnerTest extends HazelcastTestSupport {
+public class QueryRunnerTest extends HazelcastTestSupport {
 
     private HazelcastInstance instance;
     private IMap<String, String> map;
-    private MapQueryRunner queryRunner;
+    private QueryRunner queryRunner;
 
     private int partitionId;
     private String key;
@@ -55,7 +55,7 @@ public class MapQueryRunnerTest extends HazelcastTestSupport {
 
     @Test
     public void assertSequentialQueryRunner() {
-        assertEquals(MapQueryRunner.class, getQueryRunner().getClass());
+        assertEquals(QueryRunner.class, getQueryRunner().getClass());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class MapQueryRunnerTest extends HazelcastTestSupport {
         assertEquals(map.get(key), toObject(result.getRows().iterator().next().getValue()));
     }
 
-    private MapQueryRunner getQueryRunner() {
+    private QueryRunner getQueryRunner() {
         MapService mapService = getNodeEngineImpl(instance).getService(MapService.SERVICE_NAME);
         return mapService.getMapServiceContext().getMapQueryRunner("");
     }

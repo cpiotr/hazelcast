@@ -35,19 +35,19 @@ import com.hazelcast.map.impl.operation.MapOperationProvider;
 import com.hazelcast.map.impl.operation.MapOperationProviders;
 import com.hazelcast.map.impl.operation.MapPartitionDestroyTask;
 import com.hazelcast.map.impl.query.AccumulationExecutor;
-import com.hazelcast.map.impl.query.AccumulationParallelExecutor;
-import com.hazelcast.map.impl.query.AccumulationSameThreadExecutor;
 import com.hazelcast.map.impl.query.AggregationResult;
 import com.hazelcast.map.impl.query.AggregationResultProcessor;
-import com.hazelcast.map.impl.query.MapPartitionScanExecutor;
-import com.hazelcast.map.impl.query.MapPartitionScanParallelExecutor;
-import com.hazelcast.map.impl.query.MapPartitionScanRunner;
-import com.hazelcast.map.impl.query.MapPartitionScanSameThreadExecutor;
+import com.hazelcast.map.impl.query.CallerRunsAccumulationExecutor;
+import com.hazelcast.map.impl.query.CallerRunsPartitionScanExecutor;
 import com.hazelcast.map.impl.query.MapQueryEngine;
 import com.hazelcast.map.impl.query.MapQueryEngineImpl;
-import com.hazelcast.map.impl.query.MapQueryRunner;
+import com.hazelcast.map.impl.query.ParallelAccumulationExecutor;
+import com.hazelcast.map.impl.query.ParallelPartitionScanExecutor;
+import com.hazelcast.map.impl.query.PartitionScanExecutor;
+import com.hazelcast.map.impl.query.PartitionScanRunner;
 import com.hazelcast.map.impl.query.QueryResult;
 import com.hazelcast.map.impl.query.QueryResultProcessor;
+import com.hazelcast.map.impl.query.QueryRunner;
 import com.hazelcast.map.impl.query.ResultProcessorRegistry;
 import com.hazelcast.map.impl.recordstore.DefaultRecordStore;
 import com.hazelcast.map.impl.recordstore.RecordStore;
@@ -122,7 +122,7 @@ class MapServiceContextImpl implements MapServiceContext {
     protected final LocalMapStatsProvider localMapStatsProvider;
     protected final MergePolicyProvider mergePolicyProvider;
     protected final MapQueryEngine mapQueryEngine;
-    protected final MapQueryRunner mapQueryRunner;
+    protected final QueryRunner mapQueryRunner;
     protected final QueryOptimizer queryOptimizer;
     protected final ContextMutexFactory contextMutexFactory = new ContextMutexFactory();
     protected final PartitioningStrategyFactory partitioningStrategyFactory;
@@ -173,18 +173,18 @@ class MapServiceContextImpl implements MapServiceContext {
         return new MapQueryEngineImpl(this);
     }
 
-    private MapQueryRunner createMapQueryRunner(NodeEngine nodeEngine, QueryOptimizer queryOptimizer,
-                                                ResultProcessorRegistry resultProcessorRegistry) {
+    private QueryRunner createMapQueryRunner(NodeEngine nodeEngine, QueryOptimizer queryOptimizer,
+                                             ResultProcessorRegistry resultProcessorRegistry) {
         boolean parallelEvaluation = nodeEngine.getProperties().getBoolean(QUERY_PREDICATE_PARALLEL_EVALUATION);
-        MapPartitionScanRunner partitionScanRunner = new MapPartitionScanRunner(this);
-        MapPartitionScanExecutor partitionScanExecutor;
+        PartitionScanRunner partitionScanRunner = new PartitionScanRunner(this);
+        PartitionScanExecutor partitionScanExecutor;
         if (parallelEvaluation) {
             ManagedExecutorService queryExecutorService = nodeEngine.getExecutionService().getExecutor(QUERY_EXECUTOR);
-            partitionScanExecutor = new MapPartitionScanParallelExecutor(partitionScanRunner, queryExecutorService);
+            partitionScanExecutor = new ParallelPartitionScanExecutor(partitionScanRunner, queryExecutorService);
         } else {
-            partitionScanExecutor = new MapPartitionScanSameThreadExecutor(partitionScanRunner);
+            partitionScanExecutor = new CallerRunsPartitionScanExecutor(partitionScanRunner);
         }
-        return new MapQueryRunner(this, queryOptimizer,
+        return new QueryRunner(this, queryOptimizer,
                 partitionScanExecutor, resultProcessorRegistry);
     }
 
@@ -204,9 +204,9 @@ class MapServiceContextImpl implements MapServiceContext {
         AccumulationExecutor accumulationExecutor;
         if (parallelAccumulation) {
             ManagedExecutorService queryExecutorService = nodeEngine.getExecutionService().getExecutor(QUERY_EXECUTOR);
-            accumulationExecutor = new AccumulationParallelExecutor(queryExecutorService, ss);
+            accumulationExecutor = new ParallelAccumulationExecutor(queryExecutorService, ss);
         } else {
-            accumulationExecutor = new AccumulationSameThreadExecutor(ss);
+            accumulationExecutor = new CallerRunsAccumulationExecutor(ss);
         }
 
         return new AggregationResultProcessor(accumulationExecutor);
@@ -422,7 +422,7 @@ class MapServiceContextImpl implements MapServiceContext {
     }
 
     @Override
-    public MapQueryRunner getMapQueryRunner(String name) {
+    public QueryRunner getMapQueryRunner(String name) {
         return mapQueryRunner;
     }
 

@@ -61,7 +61,7 @@ public class MapQueryEngineImpl implements MapQueryEngine {
     protected final IPartitionService partitionService;
     protected final OperationService operationService;
     protected final ClusterService clusterService;
-    protected final MapQueryDispatcher queryDispatcher;
+    protected final QueryDispatcher queryDispatcher;
     protected final ResultProcessorRegistry resultProcessorRegistry;
 
     public MapQueryEngineImpl(MapServiceContext mapServiceContext) {
@@ -73,7 +73,7 @@ public class MapQueryEngineImpl implements MapQueryEngine {
         this.queryResultSizeLimiter = new QueryResultSizeLimiter(mapServiceContext, logger);
         this.operationService = nodeEngine.getOperationService();
         this.clusterService = nodeEngine.getClusterService();
-        this.queryDispatcher = new MapQueryDispatcher(mapServiceContext);
+        this.queryDispatcher = new QueryDispatcher(mapServiceContext);
         this.resultProcessorRegistry = mapServiceContext.getResultProcessorRegistry();
     }
 

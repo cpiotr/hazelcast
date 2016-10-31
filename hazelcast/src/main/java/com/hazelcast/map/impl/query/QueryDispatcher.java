@@ -49,7 +49,7 @@ import static java.util.Collections.singletonList;
  * Does not contain any query logic. Relies on query operations only.
  * Should be used by query engine only!
  */
-final class MapQueryDispatcher {
+final class QueryDispatcher {
 
     protected final MapServiceContext mapServiceContext;
     protected final NodeEngine nodeEngine;
@@ -61,7 +61,7 @@ final class MapQueryDispatcher {
     protected final LocalMapStatsProvider localMapStatsProvider;
     protected final ManagedExecutorService executor;
 
-    protected MapQueryDispatcher(MapServiceContext mapServiceContext) {
+    protected QueryDispatcher(MapServiceContext mapServiceContext) {
         this.mapServiceContext = mapServiceContext;
         this.nodeEngine = mapServiceContext.getNodeEngine();
         this.serializationService = (InternalSerializationService) nodeEngine.getSerializationService();

@@ -42,7 +42,7 @@ import java.util.concurrent.ExecutionException;
  * Used by query operations only: QueryOperation & QueryPartitionOperation
  * Should not be used by proxies or any other query related objects.
  */
-public class MapQueryRunner {
+public class QueryRunner {
 
     protected final MapServiceContext mapServiceContext;
     protected final NodeEngine nodeEngine;
@@ -54,11 +54,11 @@ public class MapQueryRunner {
     protected final OperationService operationService;
     protected final ClusterService clusterService;
     protected final LocalMapStatsProvider localMapStatsProvider;
-    protected final MapPartitionScanExecutor partitionScanExecutor;
+    protected final PartitionScanExecutor partitionScanExecutor;
     protected final ResultProcessorRegistry resultProcessorRegistry;
 
-    public MapQueryRunner(MapServiceContext mapServiceContext, QueryOptimizer optimizer,
-                          MapPartitionScanExecutor partitionScanExecutor, ResultProcessorRegistry resultProcessorRegistry) {
+    public QueryRunner(MapServiceContext mapServiceContext, QueryOptimizer optimizer,
+                       PartitionScanExecutor partitionScanExecutor, ResultProcessorRegistry resultProcessorRegistry) {
         this.mapServiceContext = mapServiceContext;
         this.nodeEngine = mapServiceContext.getNodeEngine();
         this.serializationService = (InternalSerializationService) nodeEngine.getSerializationService();

@@ -49,7 +49,7 @@ import static com.hazelcast.util.SortingUtil.getSortedSubList;
 /**
  * Responsible for running a full-partition scna for a single partition in the calling thread.
  */
-public class MapPartitionScanRunner {
+public class PartitionScanRunner {
 
     protected final MapServiceContext mapServiceContext;
     protected final NodeEngine nodeEngine;
@@ -59,7 +59,7 @@ public class MapPartitionScanRunner {
     protected final OperationService operationService;
     protected final ClusterService clusterService;
 
-    public MapPartitionScanRunner(MapServiceContext mapServiceContext) {
+    public PartitionScanRunner(MapServiceContext mapServiceContext) {
         this.mapServiceContext = mapServiceContext;
         this.nodeEngine = mapServiceContext.getNodeEngine();
         this.serializationService = (InternalSerializationService) nodeEngine.getSerializationService();
@@ -70,8 +70,7 @@ public class MapPartitionScanRunner {
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<QueryableEntry> runUsingPartitionScanOnSinglePartition(
-            String mapName, Predicate predicate, int partitionId) {
+    public Collection<QueryableEntry> run(String mapName, Predicate predicate, int partitionId) {
         PagingPredicate pagingPredicate = predicate instanceof PagingPredicate ? (PagingPredicate) predicate : null;
         List<QueryableEntry> resultList = new LinkedList<QueryableEntry>();
 

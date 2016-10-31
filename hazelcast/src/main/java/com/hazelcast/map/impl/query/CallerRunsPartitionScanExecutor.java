@@ -24,14 +24,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Implementation of the {@link MapPartitionScanExecutor} which executes the partition scan in a sequential-fashion
+ * Implementation of the {@link PartitionScanExecutor} which executes the partition scan in a sequential-fashion
  * in the calling thread.
  */
-public class MapPartitionScanSameThreadExecutor implements MapPartitionScanExecutor {
+public class CallerRunsPartitionScanExecutor implements PartitionScanExecutor {
 
-    private final MapPartitionScanRunner partitionScanRunner;
+    private final PartitionScanRunner partitionScanRunner;
 
-    public MapPartitionScanSameThreadExecutor(MapPartitionScanRunner partitionScanRunner) {
+    public CallerRunsPartitionScanExecutor(PartitionScanRunner partitionScanRunner) {
         this.partitionScanRunner = partitionScanRunner;
     }
 
@@ -41,7 +41,7 @@ public class MapPartitionScanSameThreadExecutor implements MapPartitionScanExecu
         Collection<QueryableEntry> result = new ArrayList<QueryableEntry>();
         for (Integer partitionId : partitions) {
             try {
-                result.addAll(partitionScanRunner.runUsingPartitionScanOnSinglePartition(mapName, predicate, partitionId));
+                result.addAll(partitionScanRunner.run(mapName, predicate, partitionId));
             } catch (RetryableHazelcastException e) {
                 // RetryableHazelcastException are stored and re-thrown later. this is to ensure all partitions
                 // are touched as when the parallel execution was used.
