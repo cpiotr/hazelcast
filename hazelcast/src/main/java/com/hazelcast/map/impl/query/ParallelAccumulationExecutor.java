@@ -52,10 +52,15 @@ public class ParallelAccumulationExecutor implements AccumulationExecutor {
     public AggregationResult execute(
             Aggregator aggregator, Collection<QueryableEntry> entries, Collection<Integer> partitionIds) {
         Collection<Aggregator> chunkAggregators = accumulateParallel(aggregator, entries);
+
         Aggregator resultAggregator = clone(aggregator);
+        resultAggregator.onAccumulationFinished();
+
         for (Aggregator chunkAggregator : chunkAggregators) {
             resultAggregator.combine(chunkAggregator);
         }
+        resultAggregator.onCombinationFinished();
+
         AggregationResult result = new AggregationResult(resultAggregator);
         result.setPartitionIds(partitionIds);
         return result;
@@ -112,6 +117,7 @@ public class ParallelAccumulationExecutor implements AccumulationExecutor {
             for (QueryableEntry entry : entries) {
                 aggregator.accumulate(entry);
             }
+            aggregator.onAccumulationFinished();
             return aggregator;
         }
     }

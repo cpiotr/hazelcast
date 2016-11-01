@@ -35,8 +35,7 @@ import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Runs query operations in the calling thread (thus blucking it)
- * Query evaluation per partition is run in a sequential fashion.
+ * Runs query operations in the calling thread (thus blocking it)
  * <p>
  * Used by query operations only: QueryOperation & QueryPartitionOperation
  * Should not be used by proxies or any other query related objects.

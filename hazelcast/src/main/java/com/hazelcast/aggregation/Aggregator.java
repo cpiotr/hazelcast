@@ -38,23 +38,39 @@ import java.util.Map;
 public abstract class Aggregator<R, K, V> implements Serializable {
 
     /**
+     * Accumulates the given entries.
+     *
      * @param entry entries to accumulate.
      */
     public abstract void accumulate(Map.Entry<K, V> entry);
 
     /**
-     * Called after the last call to combine on a specific instance, enables disposing of the intermediary state.
+     * Called after the last call to combine on a specific instance. Enables disposing of the intermediary state.
+     * This should be a very fast operation that just disposes unnecessary state (if applicable).
+     * <p>
+     * IMPORTANT: It may not be called if the instance aggregator does not take part in the accumulation phase.
+     * It's caused by the fact that the aggregation may be run in a parallel way and each thread gets a clone of the
+     * aggregator.
      */
     public void onAccumulationFinished() {
     }
 
     /**
+     * Incorporates the intermediary result of the given aggregator to this instance of the aggregator.
+     * Enables merging the intermediary state from a given aggregator.
+     * It is used when the aggregation is split into a couple of aggregators.
+     *
      * @param aggregator aggregator providing intermediary results to be combined into the results of this aggregator.
      */
     public abstract void combine(Aggregator aggregator);
 
     /**
-     * Called after the last call to combine on a specific instance, enables disposing of the intermediary state.
+     * Called after the last call to combine on a specific instance. Enables disposing of the intermediary state.
+     * This should be a very fast operation that just disposes unnecessary state (if applicable).
+     * <p>
+     * IMPORTANT: It may not be called if the instance aggregator does not take part in the combination phase.
+     * It's caused by the fact that the aggregation may be run in a parallel way and each thread gets a clone of the
+     * aggregator.
      */
     public void onCombinationFinished() {
     }

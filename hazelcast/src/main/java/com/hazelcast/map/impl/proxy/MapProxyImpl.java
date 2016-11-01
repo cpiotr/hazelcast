@@ -762,6 +762,7 @@ public class MapProxyImpl<K, V> extends MapProxySupport implements IMap<K, V>, I
                 .aggregator(aggregator)
                 .build();
         AggregationResult result = queryEngine.execute(query, Target.ALL_NODES);
+        result.getAggregator().onCombinationFinished();
         return result.<R>getAggregator().aggregate();
     }
 
@@ -783,6 +784,7 @@ public class MapProxyImpl<K, V> extends MapProxySupport implements IMap<K, V>, I
                 .aggregator(aggregator)
                 .build();
         AggregationResult result = queryEngine.execute(query, Target.ALL_NODES);
+        result.getAggregator().onCombinationFinished();
         return result.<R>getAggregator().aggregate();
     }
 

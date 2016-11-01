@@ -40,6 +40,9 @@ public class CallerRunsAccumulationExecutor implements AccumulationExecutor {
         for (QueryableEntry entry : entries) {
             resultAggregator.accumulate(entry);
         }
+        resultAggregator.onAccumulationFinished();
+        resultAggregator.onCombinationFinished();
+
         AggregationResult result = new AggregationResult(resultAggregator);
         result.setPartitionIds(partitionIds);
         return result;
