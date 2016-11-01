@@ -32,7 +32,6 @@ import com.hazelcast.spi.partition.IPartitionService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -167,11 +166,16 @@ public class QueryRunner {
 
     public Result runUsingPartitionScanOnSinglePartition(
             Query query, int partitionId) throws ExecutionException, InterruptedException {
-        MapContainer mapContainer = mapServiceContext.getMapContainer(query.getMapName());
-        Predicate predicate = queryOptimizer.optimize(query.getPredicate(), mapContainer.getIndexes());
-        List<Integer> partitionIds = Collections.singletonList(partitionId);
-        Collection<QueryableEntry> entries = partitionScanExecutor.execute(query.getMapName(), predicate, partitionIds);
-        return populateTheResult(query, entries, partitionIds);
+        Collection<QueryableEntry> entries = doRunUsingPartitionScanOnSinglePartition(query.getMapName(),
+                query.getPredicate(), partitionId);
+        return populateTheResult(query, entries, Collections.singletonList(partitionId));
+    }
+
+    protected Collection<QueryableEntry> doRunUsingPartitionScanOnSinglePartition(
+            String mapName, Predicate originalPredicate, int partitionId) throws ExecutionException, InterruptedException {
+        MapContainer mapContainer = mapServiceContext.getMapContainer(mapName);
+        Predicate predicate = queryOptimizer.optimize(originalPredicate, mapContainer.getIndexes());
+        return partitionScanExecutor.execute(mapName, predicate, Collections.singletonList(partitionId));
     }
 
     /**

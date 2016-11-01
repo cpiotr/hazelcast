@@ -123,6 +123,7 @@ class MapServiceContextImpl implements MapServiceContext {
     protected final MergePolicyProvider mergePolicyProvider;
     protected final MapQueryEngine mapQueryEngine;
     protected final QueryRunner mapQueryRunner;
+    protected final PartitionScanRunner partitionScanRunner;
     protected final QueryOptimizer queryOptimizer;
     protected final ContextMutexFactory contextMutexFactory = new ContextMutexFactory();
     protected final PartitioningStrategyFactory partitioningStrategyFactory;
@@ -143,8 +144,9 @@ class MapServiceContextImpl implements MapServiceContext {
         this.mapEventPublisher = createMapEventPublisherSupport();
         this.queryOptimizer = newOptimizer(nodeEngine.getProperties());
         this.resultProcessorRegistry = createResultProcessorRegistry(nodeEngine.getSerializationService());
+        this.partitionScanRunner = createPartitionScanRunner();
         this.mapQueryEngine = createMapQueryEngine();
-        this.mapQueryRunner = createMapQueryRunner(nodeEngine, queryOptimizer, resultProcessorRegistry);
+        this.mapQueryRunner = createMapQueryRunner(nodeEngine, queryOptimizer, resultProcessorRegistry, partitionScanRunner);
         this.eventService = nodeEngine.getEventService();
         this.operationProviders = createOperationProviders();
         this.partitioningStrategyFactory = new PartitioningStrategyFactory(nodeEngine.getConfigClassLoader());
@@ -173,10 +175,14 @@ class MapServiceContextImpl implements MapServiceContext {
         return new MapQueryEngineImpl(this);
     }
 
-    private QueryRunner createMapQueryRunner(NodeEngine nodeEngine, QueryOptimizer queryOptimizer,
-                                             ResultProcessorRegistry resultProcessorRegistry) {
+    private PartitionScanRunner createPartitionScanRunner() {
+        return new PartitionScanRunner(this);
+    }
+
+    protected QueryRunner createMapQueryRunner(NodeEngine nodeEngine, QueryOptimizer queryOptimizer,
+                                               ResultProcessorRegistry resultProcessorRegistry,
+                                               PartitionScanRunner partitionScanRunner) {
         boolean parallelEvaluation = nodeEngine.getProperties().getBoolean(QUERY_PREDICATE_PARALLEL_EVALUATION);
-        PartitionScanRunner partitionScanRunner = new PartitionScanRunner(this);
         PartitionScanExecutor partitionScanExecutor;
         if (parallelEvaluation) {
             ManagedExecutorService queryExecutorService = nodeEngine.getExecutionService().getExecutor(QUERY_EXECUTOR);
@@ -184,8 +190,7 @@ class MapServiceContextImpl implements MapServiceContext {
         } else {
             partitionScanExecutor = new CallerRunsPartitionScanExecutor(partitionScanRunner);
         }
-        return new QueryRunner(this, queryOptimizer,
-                partitionScanExecutor, resultProcessorRegistry);
+        return new QueryRunner(this, queryOptimizer, partitionScanExecutor, resultProcessorRegistry);
     }
 
     private ResultProcessorRegistry createResultProcessorRegistry(SerializationService ss) {
@@ -684,6 +689,11 @@ class MapServiceContextImpl implements MapServiceContext {
         } else {
             expirationManager.start();
         }
+    }
+
+    @Override
+    public PartitionScanRunner getPartitionScanRunner() {
+        return partitionScanRunner;
     }
 
     @Override
