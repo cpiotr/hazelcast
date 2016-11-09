@@ -139,7 +139,7 @@ public class MapProjectionTest extends HazelcastTestSupport {
         return map;
     }
 
-    private <K, V> IMap<K, V> getMapWithNodeCount(int nodeCount) {
+    public <K, V> IMap<K, V> getMapWithNodeCount(int nodeCount) {
         if (nodeCount < 1) {
             throw new IllegalArgumentException("node count < 1");
         }

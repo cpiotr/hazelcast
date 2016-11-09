@@ -16,61 +16,48 @@
 
 package com.hazelcast.client.impl.protocol.task.map;
 
+import com.hazelcast.aggregation.Aggregator;
 import com.hazelcast.client.impl.protocol.ClientMessage;
-import com.hazelcast.client.impl.protocol.codec.MapKeySetCodec;
+import com.hazelcast.client.impl.protocol.codec.MapAggregateWithPredicateCodec;
 import com.hazelcast.instance.Node;
-import com.hazelcast.map.impl.query.QueryResultRow;
 import com.hazelcast.nio.Connection;
 import com.hazelcast.nio.serialization.Data;
 import com.hazelcast.query.Predicate;
-import com.hazelcast.query.TruePredicate;
 import com.hazelcast.security.permission.ActionConstants;
 import com.hazelcast.security.permission.MapPermission;
-import com.hazelcast.util.IterationType;
 
 import java.security.Permission;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
-public class MapKeySetMessageTask
-        extends DefaultMapQueryMessageTask<MapKeySetCodec.RequestParameters> {
+public class MapAggregateWithPredicateMessageTask
+        extends DefaultMapAggregateMessageTask<MapAggregateWithPredicateCodec.RequestParameters> {
 
-    public MapKeySetMessageTask(ClientMessage clientMessage, Node node, Connection connection) {
+    public MapAggregateWithPredicateMessageTask(ClientMessage clientMessage, Node node, Connection connection) {
         super(clientMessage, node, connection);
     }
 
     @Override
-    protected Object reduce(Collection<QueryResultRow> result) {
-        List<Data> keys = new ArrayList<Data>(result.size());
-        for (QueryResultRow resultEntry : result) {
-            keys.add(resultEntry.getKey());
-        }
-        return keys;
+    protected Aggregator<?, ?, ?> getAggregator() {
+        return nodeEngine.getSerializationService().toObject(parameters.aggregator);
     }
 
     @Override
     protected Predicate getPredicate() {
-        return TruePredicate.INSTANCE;
+        return nodeEngine.getSerializationService().toObject(parameters.predicate);
     }
 
     @Override
-    protected IterationType getIterationType() {
-        return IterationType.KEY;
-    }
-
-    @Override
-    protected MapKeySetCodec.RequestParameters decodeClientMessage(ClientMessage clientMessage) {
-        return MapKeySetCodec.decodeRequest(clientMessage);
+    protected MapAggregateWithPredicateCodec.RequestParameters decodeClientMessage(ClientMessage clientMessage) {
+        return MapAggregateWithPredicateCodec.decodeRequest(clientMessage);
     }
 
     @Override
     protected ClientMessage encodeResponse(Object response) {
-        return MapKeySetCodec.encodeResponse((List<Data>) response);
+        Data data = nodeEngine.getSerializationService().toData(response);
+        return MapAggregateWithPredicateCodec.encodeResponse(data);
     }
 
     public Permission getRequiredPermission() {
-        return new MapPermission(parameters.name, ActionConstants.ACTION_READ);
+        return new MapPermission(parameters.name, ActionConstants.ACTION_AGGREGATE);
     }
 
     @Override
@@ -80,11 +67,11 @@ public class MapKeySetMessageTask
 
     @Override
     public String getMethodName() {
-        return "keySet";
+        return "aggregateWithPredicate";
     }
 
     @Override
     public Object[] getParameters() {
-        return null;
+        return new Object[]{parameters.name, parameters.aggregator, parameters.predicate};
     }
 }

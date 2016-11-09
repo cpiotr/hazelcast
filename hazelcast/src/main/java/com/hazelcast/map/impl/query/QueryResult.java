@@ -131,7 +131,7 @@ public class QueryResult implements Result<QueryResult>, IdentifiedDataSerializa
     }
 
     public void setPartitionIds(Collection<Integer> partitionIds) {
-        this.partitionIds = partitionIds;
+        this.partitionIds = new ArrayList<Integer>(partitionIds);
     }
 
     public Collection<QueryResultRow> getRows() {

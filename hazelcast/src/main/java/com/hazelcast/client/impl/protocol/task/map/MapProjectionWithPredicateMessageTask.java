@@ -17,60 +17,47 @@
 package com.hazelcast.client.impl.protocol.task.map;
 
 import com.hazelcast.client.impl.protocol.ClientMessage;
-import com.hazelcast.client.impl.protocol.codec.MapKeySetCodec;
+import com.hazelcast.client.impl.protocol.codec.MapProjectWithPredicateCodec;
 import com.hazelcast.instance.Node;
-import com.hazelcast.map.impl.query.QueryResultRow;
 import com.hazelcast.nio.Connection;
 import com.hazelcast.nio.serialization.Data;
+import com.hazelcast.projection.Projection;
 import com.hazelcast.query.Predicate;
-import com.hazelcast.query.TruePredicate;
 import com.hazelcast.security.permission.ActionConstants;
 import com.hazelcast.security.permission.MapPermission;
-import com.hazelcast.util.IterationType;
 
 import java.security.Permission;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-public class MapKeySetMessageTask
-        extends DefaultMapQueryMessageTask<MapKeySetCodec.RequestParameters> {
+public class MapProjectionWithPredicateMessageTask
+        extends DefaultMapProjectMessageTask<MapProjectWithPredicateCodec.RequestParameters> {
 
-    public MapKeySetMessageTask(ClientMessage clientMessage, Node node, Connection connection) {
+    public MapProjectionWithPredicateMessageTask(ClientMessage clientMessage, Node node, Connection connection) {
         super(clientMessage, node, connection);
     }
 
     @Override
-    protected Object reduce(Collection<QueryResultRow> result) {
-        List<Data> keys = new ArrayList<Data>(result.size());
-        for (QueryResultRow resultEntry : result) {
-            keys.add(resultEntry.getKey());
-        }
-        return keys;
+    protected Projection<?, ?> getProjection() {
+        return nodeEngine.getSerializationService().toObject(parameters.projection);
     }
 
     @Override
     protected Predicate getPredicate() {
-        return TruePredicate.INSTANCE;
+        return nodeEngine.getSerializationService().toObject(parameters.predicate);
     }
 
     @Override
-    protected IterationType getIterationType() {
-        return IterationType.KEY;
-    }
-
-    @Override
-    protected MapKeySetCodec.RequestParameters decodeClientMessage(ClientMessage clientMessage) {
-        return MapKeySetCodec.decodeRequest(clientMessage);
+    protected MapProjectWithPredicateCodec.RequestParameters decodeClientMessage(ClientMessage clientMessage) {
+        return MapProjectWithPredicateCodec.decodeRequest(clientMessage);
     }
 
     @Override
     protected ClientMessage encodeResponse(Object response) {
-        return MapKeySetCodec.encodeResponse((List<Data>) response);
+        return MapProjectWithPredicateCodec.encodeResponse((List<Data>) response);
     }
 
     public Permission getRequiredPermission() {
-        return new MapPermission(parameters.name, ActionConstants.ACTION_READ);
+        return new MapPermission(parameters.name, ActionConstants.ACTION_PROJECTION);
     }
 
     @Override
@@ -80,11 +67,11 @@ public class MapKeySetMessageTask
 
     @Override
     public String getMethodName() {
-        return "keySet";
+        return "projectWithPredicate";
     }
 
     @Override
     public Object[] getParameters() {
-        return null;
+        return new Object[] { parameters.name, parameters.projection, parameters.predicate };
     }
 }

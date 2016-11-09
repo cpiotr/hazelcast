@@ -60,7 +60,7 @@ public class AggregationResult implements Result<AggregationResult>, IdentifiedD
     }
 
     public void setPartitionIds(Collection<Integer> partitionIds) {
-        this.partitionIds = partitionIds;
+        this.partitionIds = new ArrayList<Integer>(partitionIds);
     }
 
     @Override
