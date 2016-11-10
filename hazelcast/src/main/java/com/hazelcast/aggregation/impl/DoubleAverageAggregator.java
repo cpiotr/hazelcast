@@ -1,31 +1,32 @@
-package com.hazelcast.aggregation;
+package com.hazelcast.aggregation.impl;
 
-import com.hazelcast.aggregation.impl.AbstractAggregator;
+import com.hazelcast.aggregation.Aggregator;
 
 import java.util.Map;
 
-public class TestDoubleAverageAggregator<K, V> extends AbstractAggregator<Double, K, V> {
+public class DoubleAverageAggregator<K, V> extends AbstractAggregator<Double, K, V> {
 
     private double sum;
-    private int count;
+    private long count;
 
-    public TestDoubleAverageAggregator() {
+    public DoubleAverageAggregator() {
         super();
     }
 
-    public TestDoubleAverageAggregator(String attributePath) {
+    public DoubleAverageAggregator(String attributePath) {
         super(attributePath);
     }
 
     @Override
     public void accumulate(Map.Entry<K, V> entry) {
         count++;
-        sum += (Double) extract(entry);
+        Number extractedValue = (Number) extract(entry);
+        sum += extractedValue.doubleValue();
     }
 
     @Override
     public void combine(Aggregator aggregator) {
-        TestDoubleAverageAggregator doubleAverageAggregator = (TestDoubleAverageAggregator) aggregator;
+        DoubleAverageAggregator doubleAverageAggregator = (DoubleAverageAggregator) aggregator;
         this.sum += doubleAverageAggregator.sum;
         this.count += doubleAverageAggregator.count;
     }
