@@ -74,7 +74,7 @@ public class ServerCompatibilityTest_1_0 {
         }
         {
             ClientMessage clientMessage = ClientAuthenticationCodec
-                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString);
+                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString, null);
             int length = inputStream.readInt();
             // Since the test is generated for protocol version (1.0) which is earlier than latest change in the
             // message (version 1.3), only the bytes after frame length fields are compared
@@ -101,7 +101,7 @@ public class ServerCompatibilityTest_1_0 {
         }
         {
             ClientMessage clientMessage = ClientAuthenticationCustomCodec
-                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString);
+                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString, null);
             int length = inputStream.readInt();
             // Since the test is generated for protocol version (1.0) which is earlier than latest change in the
             // message (version 1.3), only the bytes after frame length fields are compared

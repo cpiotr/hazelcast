@@ -60,7 +60,7 @@ public class EncodeDecodeCompatibilityNullTest {
             assertTrue(isEqual(aString, params.clientHazelcastVersion));
         }
         {
-            ClientMessage clientMessage = ClientAuthenticationCodec.encodeResponse(aByte, null, null, null, aByte, aString);
+            ClientMessage clientMessage = ClientAuthenticationCodec.encodeResponse(aByte, null, null, null, aByte, aString, null);
             ClientAuthenticationCodec.ResponseParameters params = ClientAuthenticationCodec
                     .decodeResponse(ClientMessage.createForDecode(clientMessage.buffer(), 0));
             assertTrue(isEqual(aByte, params.status));
@@ -84,7 +84,7 @@ public class EncodeDecodeCompatibilityNullTest {
             assertTrue(isEqual(aString, params.clientHazelcastVersion));
         }
         {
-            ClientMessage clientMessage = ClientAuthenticationCustomCodec.encodeResponse(aByte, null, null, null, aByte, aString);
+            ClientMessage clientMessage = ClientAuthenticationCustomCodec.encodeResponse(aByte, null, null, null, aByte, aString, null);
             ClientAuthenticationCustomCodec.ResponseParameters params = ClientAuthenticationCustomCodec
                     .decodeResponse(ClientMessage.createForDecode(clientMessage.buffer(), 0));
             assertTrue(isEqual(aByte, params.status));

@@ -71,7 +71,9 @@ public class AuthenticationCustomCredentialsMessageTask
     @Override
     protected ClientMessage encodeAuth(byte status, Address thisAddress, String uuid, String ownerUuid, byte version) {
         return ClientAuthenticationCustomCodec
-                .encodeResponse(status, thisAddress, uuid, ownerUuid, version, BuildInfoProvider.getBuildInfo().getVersion());
+                .encodeResponse(status, thisAddress, uuid, ownerUuid, version, BuildInfoProvider.getBuildInfo().getVersion(),
+                        // TODO To be replaced by Ihsan's PR https://github.com/hazelcast/hazelcast/pull/8848
+                        null);
     }
 
     @Override

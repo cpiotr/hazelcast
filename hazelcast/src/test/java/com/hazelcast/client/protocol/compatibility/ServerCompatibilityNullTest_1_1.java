@@ -73,7 +73,7 @@ public class ServerCompatibilityNullTest_1_1 {
             assertFalse(params.clientHazelcastVersionExist);
         }
         {
-            ClientMessage clientMessage = ClientAuthenticationCodec.encodeResponse(aByte, null, null, null, aByte, aString);
+            ClientMessage clientMessage = ClientAuthenticationCodec.encodeResponse(aByte, null, null, null, aByte, aString, null);
             int length = inputStream.readInt();
             // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
             // message (version 1.3), only the bytes after frame length fields are compared
@@ -99,7 +99,7 @@ public class ServerCompatibilityNullTest_1_1 {
             assertFalse(params.clientHazelcastVersionExist);
         }
         {
-            ClientMessage clientMessage = ClientAuthenticationCustomCodec.encodeResponse(aByte, null, null, null, aByte, aString);
+            ClientMessage clientMessage = ClientAuthenticationCustomCodec.encodeResponse(aByte, null, null, null, aByte, aString, null);
             int length = inputStream.readInt();
             // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
             // message (version 1.3), only the bytes after frame length fields are compared

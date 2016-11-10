@@ -61,7 +61,7 @@ public class EncodeDecodeCompatibilityTest {
         }
         {
             ClientMessage clientMessage = ClientAuthenticationCodec
-                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString);
+                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString, null);
             ClientAuthenticationCodec.ResponseParameters params = ClientAuthenticationCodec
                     .decodeResponse(ClientMessage.createForDecode(clientMessage.buffer(), 0));
             assertTrue(isEqual(aByte, params.status));
@@ -86,7 +86,7 @@ public class EncodeDecodeCompatibilityTest {
         }
         {
             ClientMessage clientMessage = ClientAuthenticationCustomCodec
-                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString);
+                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString, null);
             ClientAuthenticationCustomCodec.ResponseParameters params = ClientAuthenticationCustomCodec
                     .decodeResponse(ClientMessage.createForDecode(clientMessage.buffer(), 0));
             assertTrue(isEqual(aByte, params.status));
