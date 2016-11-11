@@ -2,7 +2,6 @@ package com.hazelcast.aggregation.impl;
 
 import com.hazelcast.aggregation.Aggregator;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
@@ -20,26 +19,14 @@ public class BigIntegerSumAggregator<K, V> extends AbstractAggregator<BigInteger
 
     @Override
     public void accumulate(Map.Entry<K, V> entry) {
-        Number extract = (Number) extract(entry);
-        if (extract instanceof BigInteger) {
-            BigInteger bigInteger = (BigInteger) extract;
-            accumulate(bigInteger);
-        } else if (extract instanceof BigDecimal) {
-            BigDecimal bigDecimal = (BigDecimal) extract;
-            accumulate(bigDecimal.toBigInteger());
-        } else {
-            accumulate(BigInteger.valueOf(extract.longValue()));
-        }
-    }
-
-    void accumulate(BigInteger value) {
-        sum = sum.add(value);
+        BigInteger extractedValue = (BigInteger) extract(entry);
+        sum = sum.add(extractedValue);
     }
 
     @Override
     public void combine(Aggregator aggregator) {
         BigIntegerSumAggregator longSumAggregator = (BigIntegerSumAggregator) aggregator;
-        accumulate(longSumAggregator.sum);
+        sum = sum.add(longSumAggregator.sum);
     }
 
     @Override
