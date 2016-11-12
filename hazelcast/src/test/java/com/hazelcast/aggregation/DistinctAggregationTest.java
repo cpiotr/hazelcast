@@ -23,8 +23,10 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -32,20 +34,28 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(HazelcastParallelClassRunner.class)
 @Category({QuickTest.class, ParallelTest.class})
-public class CountAggregationTest {
+public class DistinctAggregationTest {
 
     @Test(timeout = 60000)
     public void testCountAggregator() throws Exception {
 
-        List<BigDecimal> values = TestDoubles.sampleBigDecimals();
-        long expectation = values.size();
+        List<String> values = repeatTimes(3, TestDoubles.sampleStrings());
+        Set<String> expectation = new HashSet<String>(values);
 
-        Aggregator<Long, BigDecimal, BigDecimal> aggregation = Aggregators.count();
-        for (BigDecimal value : values) {
+        Aggregator<Set<String>, String, String> aggregation = Aggregators.distinct();
+        for (String value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
-        long result = aggregation.aggregate();
+        Set<String> result = aggregation.aggregate();
 
         assertThat(result, is(equalTo(expectation)));
+    }
+
+    private List<String> repeatTimes(int times, List<String> values) {
+        List<String> repeatedValues = new ArrayList<String>();
+        for (int i = 0; i < times; i++) {
+            repeatedValues.addAll(values);
+        }
+        return repeatedValues;
     }
 }

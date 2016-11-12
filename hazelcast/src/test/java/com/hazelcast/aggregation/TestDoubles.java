@@ -5,6 +5,7 @@ import com.hazelcast.map.impl.MapEntrySimple;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -66,5 +67,10 @@ class TestDoubles {
                 return value.longValue();
             }
         });
+    }
+
+    public static List<String> sampleStrings() {
+        String loremIpsum = "Lorem ipsum dolor sit amet consectetur adipiscing elit";
+        return Arrays.asList(loremIpsum.split(" "));
     }
 }

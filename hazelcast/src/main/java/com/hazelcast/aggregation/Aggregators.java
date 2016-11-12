@@ -21,6 +21,7 @@ import com.hazelcast.aggregation.impl.BigDecimalSumAggregator;
 import com.hazelcast.aggregation.impl.BigIntegerAverageAggregator;
 import com.hazelcast.aggregation.impl.BigIntegerSumAggregator;
 import com.hazelcast.aggregation.impl.CountAggregator;
+import com.hazelcast.aggregation.impl.DistinctAggregator;
 import com.hazelcast.aggregation.impl.DoubleAverageAggregator;
 import com.hazelcast.aggregation.impl.DoubleSumAggregator;
 import com.hazelcast.aggregation.impl.LongSumAggregator;
@@ -29,6 +30,7 @@ import com.hazelcast.aggregation.impl.MinAggregator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Set;
 
 /**
  * A utility class to create {@link com.hazelcast.aggregation.Aggregator} instances.
@@ -121,5 +123,9 @@ public final class Aggregators {
 
     public static <K, V> Aggregator<Long, K, V> count() {
         return new CountAggregator<K, V>();
+    }
+
+    public static <R, K, V> Aggregator<Set<R>, K, V> distinct() {
+        return new DistinctAggregator<R, K, V>();
     }
 }
