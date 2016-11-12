@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class BigDecimalSumAggregator<K, V> extends AbstractAggregator<BigDecimal, K, V> {
 
-    private BigDecimal sum;
+    private BigDecimal sum = BigDecimal.ZERO;
 
     public BigDecimalSumAggregator() {
         super();

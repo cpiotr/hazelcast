@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class BigIntegerSumAggregator<K, V> extends AbstractAggregator<BigInteger, K, V> {
 
-    private BigInteger sum;
+    private BigInteger sum = BigInteger.ZERO;
 
     public BigIntegerSumAggregator() {
         super();
