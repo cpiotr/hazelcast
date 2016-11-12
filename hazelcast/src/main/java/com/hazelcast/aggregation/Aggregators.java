@@ -21,7 +21,7 @@ import com.hazelcast.aggregation.impl.BigDecimalSumAggregator;
 import com.hazelcast.aggregation.impl.BigIntegerAverageAggregator;
 import com.hazelcast.aggregation.impl.BigIntegerSumAggregator;
 import com.hazelcast.aggregation.impl.CountAggregator;
-import com.hazelcast.aggregation.impl.DistinctAggregator;
+import com.hazelcast.aggregation.impl.DistinctValuesAggregator;
 import com.hazelcast.aggregation.impl.DoubleAverageAggregator;
 import com.hazelcast.aggregation.impl.DoubleSumAggregator;
 import com.hazelcast.aggregation.impl.LongSumAggregator;
@@ -135,6 +135,6 @@ public final class Aggregators {
     }
 
     public static <R, K, V> Aggregator<Set<R>, K, V> distinct() {
-        return new DistinctAggregator<R, K, V>();
+        return new DistinctValuesAggregator<R, K, V>();
     }
 }

@@ -6,14 +6,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class DistinctAggregator<R, K, V> extends AbstractAggregator<Set<R>, K, V> {
+public class DistinctValuesAggregator<R, K, V> extends AbstractAggregator<Set<R>, K, V> {
     Set<R> values = new HashSet<R>();
 
-    public DistinctAggregator() {
+    public DistinctValuesAggregator() {
         super();
     }
 
-    public DistinctAggregator(String attributePath) {
+    public DistinctValuesAggregator(String attributePath) {
         super(attributePath);
     }
 
@@ -25,8 +25,8 @@ public class DistinctAggregator<R, K, V> extends AbstractAggregator<Set<R>, K, V
 
     @Override
     public void combine(Aggregator aggregator) {
-        DistinctAggregator distinctAggregator = (DistinctAggregator) aggregator;
-        this.values.addAll(distinctAggregator.values);
+        DistinctValuesAggregator distinctValuesAggregator = (DistinctValuesAggregator) aggregator;
+        this.values.addAll(distinctValuesAggregator.values);
     }
 
     @Override
