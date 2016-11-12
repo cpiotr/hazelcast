@@ -20,6 +20,7 @@ import com.hazelcast.aggregation.impl.BigDecimalAverageAggregator;
 import com.hazelcast.aggregation.impl.BigDecimalSumAggregator;
 import com.hazelcast.aggregation.impl.BigIntegerAverageAggregator;
 import com.hazelcast.aggregation.impl.BigIntegerSumAggregator;
+import com.hazelcast.aggregation.impl.CountAggregator;
 import com.hazelcast.aggregation.impl.DoubleAverageAggregator;
 import com.hazelcast.aggregation.impl.DoubleSumAggregator;
 import com.hazelcast.aggregation.impl.LongSumAggregator;
@@ -116,5 +117,9 @@ public final class Aggregators {
 
     public static <K, V> Aggregator<Long, K, V> longMax() {
         return new MaxAggregator<Long, K, V>();
+    }
+
+    public static <K, V> Aggregator<Long, K, V> count() {
+        return new CountAggregator<K, V>();
     }
 }
