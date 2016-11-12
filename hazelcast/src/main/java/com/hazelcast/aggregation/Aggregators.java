@@ -16,6 +16,13 @@
 
 package com.hazelcast.aggregation;
 
+import com.hazelcast.aggregation.impl.BigDecimalAverageAggregator;
+import com.hazelcast.aggregation.impl.BigIntegerAverageAggregator;
+import com.hazelcast.aggregation.impl.DoubleAverageAggregator;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 /**
  * A utility class to create {@link com.hazelcast.aggregation.Aggregator} instances.
  */
@@ -24,4 +31,24 @@ public final class Aggregators {
     private Aggregators() {
     }
 
+    public static <K, V> Aggregator<BigDecimal, K, V> bigDecimalAvg() {
+        return new BigDecimalAverageAggregator<K, V>();
+    }
+
+
+    public static Aggregator<BigInteger, BigInteger, BigInteger> bigIntegerAvg() {
+        return new BigIntegerAverageAggregator<BigInteger, BigInteger>();
+    }
+
+    public static Aggregator<Double, Double, Double> doubleAvg() {
+        return new DoubleAverageAggregator<Double, Double>();
+    }
+
+    public static Aggregator<Double, Integer, Integer> integerAvg() {
+        return new DoubleAverageAggregator<Integer, Integer>();
+    }
+
+    public static Aggregator<Double, Long, Long> longAvg() {
+        return new DoubleAverageAggregator<Long, Long>();
+    }
 }

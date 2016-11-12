@@ -7,6 +7,7 @@ import java.util.Map;
 public class DoubleAverageAggregator<K, V> extends AbstractAggregator<Double, K, V> {
 
     private double sum;
+
     private long count;
 
     public DoubleAverageAggregator() {
