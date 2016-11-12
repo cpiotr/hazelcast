@@ -42,12 +42,7 @@ public class MaxAggregationTest {
     @Test(timeout = 60000)
     public void testBigDecimalMax() throws Exception {
 
-        List<BigDecimal> values = TestDoubles.sampleValues(new RandomNumberSupplier<BigDecimal>() {
-            @Override
-            protected BigDecimal mapFrom(Number value) {
-                return BigDecimal.valueOf(value.doubleValue());
-            }
-        });
+        List<BigDecimal> values = TestDoubles.sampleBigDecimals();
         Collections.sort(values);
 
         BigDecimal expectation = values.get(values.size()-1);
@@ -64,12 +59,7 @@ public class MaxAggregationTest {
     @Test(timeout = 60000)
     public void testBigIntegerMax() throws Exception {
 
-        List<BigInteger> values = TestDoubles.sampleValues(new RandomNumberSupplier<BigInteger>() {
-            @Override
-            protected BigInteger mapFrom(Number value) {
-                return BigInteger.valueOf(value.longValue());
-            }
-        });
+        List<BigInteger> values = TestDoubles.sampleBigIntegers();
         Collections.sort(values);
 
         BigInteger expectation = values.get(values.size()-1);
@@ -86,12 +76,7 @@ public class MaxAggregationTest {
     @Test(timeout = 60000)
     public void testDoubleMax() throws Exception {
 
-        List<Double> values = TestDoubles.sampleValues(new RandomNumberSupplier<Double>() {
-            @Override
-            protected Double mapFrom(Number value) {
-                return value.doubleValue();
-            }
-        });
+        List<Double> values = TestDoubles.sampleDoubles();
         Collections.sort(values);
 
         double expectation = values.get(values.size()-1);
@@ -108,12 +93,7 @@ public class MaxAggregationTest {
     @Test(timeout = 60000)
     public void testIntegerMax() throws Exception {
 
-        List<Integer> values = TestDoubles.sampleValues(new RandomNumberSupplier<Integer>() {
-            @Override
-            protected Integer mapFrom(Number value) {
-                return value.intValue();
-            }
-        });
+        List<Integer> values = TestDoubles.sampleIntegers();
         Collections.sort(values);
 
         long expectation = values.get(values.size()-1);
@@ -130,12 +110,7 @@ public class MaxAggregationTest {
     @Test(timeout = 60000)
     public void testLongMax() throws Exception {
 
-        List<Long> values = TestDoubles.sampleValues(new RandomNumberSupplier<Long>() {
-            @Override
-            protected Long mapFrom(Number value) {
-                return value.longValue();
-            }
-        });
+        List<Long> values = TestDoubles.sampleLongs();
         Collections.sort(values);
 
         long expectation = values.get(values.size()-1);

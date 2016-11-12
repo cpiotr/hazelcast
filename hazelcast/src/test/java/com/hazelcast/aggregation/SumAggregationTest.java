@@ -41,13 +41,7 @@ public class SumAggregationTest {
     @Test(timeout = 60000)
     public void testBigDecimalSum() throws Exception {
 
-        List<BigDecimal> values = TestDoubles.sampleValues(new RandomNumberSupplier<BigDecimal>() {
-            @Override
-            protected BigDecimal mapFrom(Number value) {
-                return BigDecimal.valueOf(value.doubleValue());
-            }
-        });
-
+        List<BigDecimal> values = TestDoubles.sampleBigDecimals();
         BigDecimal expectation = Sums.sumBigDecimals(values);
 
         Aggregator<BigDecimal, BigDecimal, BigDecimal> aggregation = Aggregators.bigDecimalSum();
@@ -62,13 +56,7 @@ public class SumAggregationTest {
     @Test(timeout = 60000)
     public void testBigIntegerSum() throws Exception {
 
-        List<BigInteger> values = TestDoubles.sampleValues(new RandomNumberSupplier<BigInteger>() {
-            @Override
-            protected BigInteger mapFrom(Number value) {
-                return BigInteger.valueOf(value.longValue());
-            }
-        });
-
+        List<BigInteger> values = TestDoubles.sampleBigIntegers();
         BigInteger expectation = Sums.sumBigIntegers(values);
 
         Aggregator<BigInteger, BigInteger, BigInteger> aggregation = Aggregators.bigIntegerSum();
@@ -83,13 +71,7 @@ public class SumAggregationTest {
     @Test(timeout = 60000)
     public void testDoubleSum() throws Exception {
 
-        List<Double> values = TestDoubles.sampleValues(new RandomNumberSupplier<Double>() {
-            @Override
-            protected Double mapFrom(Number value) {
-                return value.doubleValue();
-            }
-        });
-
+        List<Double> values = TestDoubles.sampleDoubles();
         double expectation = Sums.sumDoubles(values);
 
         Aggregator<Double, Double, Double> aggregation = Aggregators.doubleSum();
@@ -104,13 +86,7 @@ public class SumAggregationTest {
     @Test(timeout = 60000)
     public void testIntegerSum() throws Exception {
 
-        List<Integer> values = TestDoubles.sampleValues(new RandomNumberSupplier<Integer>() {
-            @Override
-            protected Integer mapFrom(Number value) {
-                return value.intValue();
-            }
-        });
-
+        List<Integer> values = TestDoubles.sampleIntegers();
         long expectation = Sums.sumIntegers(values);
 
         Aggregator<Long, Integer, Integer> aggregation = Aggregators.integerSum();
@@ -125,13 +101,7 @@ public class SumAggregationTest {
     @Test(timeout = 60000)
     public void testLongSum() throws Exception {
 
-        List<Long> values = TestDoubles.sampleValues(new RandomNumberSupplier<Long>() {
-            @Override
-            protected Long mapFrom(Number value) {
-                return value.longValue();
-            }
-        });
-
+        List<Long> values = TestDoubles.sampleLongs();
         long expectation = Sums.sumLongs(values);
 
         Aggregator<Long, Long, Long> aggregation = Aggregators.longSum();
@@ -142,5 +112,4 @@ public class SumAggregationTest {
 
         assertThat(result, is(equalTo(expectation)));
     }
-
 }

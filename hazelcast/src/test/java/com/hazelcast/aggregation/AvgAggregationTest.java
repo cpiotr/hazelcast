@@ -41,13 +41,7 @@ public class AvgAggregationTest {
     @Test(timeout = 60000)
     public void testBigDecimalAvg() throws Exception {
 
-        List<BigDecimal> values = TestDoubles.sampleValues(new RandomNumberSupplier<BigDecimal>() {
-            @Override
-            protected BigDecimal mapFrom(Number value) {
-                return BigDecimal.valueOf(value.doubleValue());
-            }
-        });
-
+        List<BigDecimal> values = TestDoubles.sampleBigDecimals();
         BigDecimal expectation = Sums.sumBigDecimals(values);
         expectation = expectation.divide(BigDecimal.valueOf(values.size()));
 
@@ -63,12 +57,7 @@ public class AvgAggregationTest {
     @Test(timeout = 60000)
     public void testBigIntegerAvg() throws Exception {
 
-        List<BigInteger> values = TestDoubles.sampleValues(new RandomNumberSupplier<BigInteger>() {
-            @Override
-            protected BigInteger mapFrom(Number value) {
-                return BigInteger.valueOf(value.longValue());
-            }
-        });
+        List<BigInteger> values = TestDoubles.sampleBigIntegers();
 
         BigInteger expectation = Sums.sumBigIntegers(values)
                 .divide(BigInteger.valueOf(values.size()));
@@ -85,12 +74,7 @@ public class AvgAggregationTest {
     @Test(timeout = 60000)
     public void testDoubleAvg() throws Exception {
 
-        List<Double> values = TestDoubles.sampleValues(new RandomNumberSupplier<Double>() {
-            @Override
-            protected Double mapFrom(Number value) {
-                return value.doubleValue();
-            }
-        });
+        List<Double> values = TestDoubles.sampleDoubles();
 
         double expectation = Sums.sumDoubles(values) / (double) values.size();
 
@@ -106,12 +90,7 @@ public class AvgAggregationTest {
     @Test(timeout = 60000)
     public void testIntegerAvg() throws Exception {
 
-        List<Integer> values = TestDoubles.sampleValues(new RandomNumberSupplier<Integer>() {
-            @Override
-            protected Integer mapFrom(Number value) {
-                return value.intValue();
-            }
-        });
+        List<Integer> values = TestDoubles.sampleIntegers();
 
         double expectation = (double) Sums.sumIntegers(values) / (double) values.size();
 
@@ -127,12 +106,7 @@ public class AvgAggregationTest {
     @Test(timeout = 60000)
     public void testLongAvg() throws Exception {
 
-        List<Long> values = TestDoubles.sampleValues(new RandomNumberSupplier<Long>() {
-            @Override
-            protected Long mapFrom(Number value) {
-                return value.longValue();
-            }
-        });
+        List<Long> values = TestDoubles.sampleLongs();
 
         double expectation = (double) Sums.sumLongs(values) / (double) values.size();
 

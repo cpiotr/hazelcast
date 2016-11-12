@@ -2,6 +2,8 @@ package com.hazelcast.aggregation;
 
 import com.hazelcast.map.impl.MapEntrySimple;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,5 +21,50 @@ class TestDoubles {
             numbers.add(randomNumberSupplier.get());
         }
         return numbers;
+    }
+
+    static List<BigDecimal> sampleBigDecimals() {
+        return sampleValues(new RandomNumberSupplier<BigDecimal>() {
+            @Override
+            protected BigDecimal mapFrom(Number value) {
+                return BigDecimal.valueOf(value.doubleValue());
+            }
+        });
+    }
+
+    static List<BigInteger> sampleBigIntegers() {
+        return sampleValues(new RandomNumberSupplier<BigInteger>() {
+            @Override
+            protected BigInteger mapFrom(Number value) {
+                return BigInteger.valueOf(value.longValue());
+            }
+        });
+    }
+
+    static List<Double> sampleDoubles() {
+        return sampleValues(new RandomNumberSupplier<Double>() {
+            @Override
+            protected Double mapFrom(Number value) {
+                return value.doubleValue();
+            }
+        });
+    }
+
+    static List<Integer> sampleIntegers() {
+        return sampleValues(new RandomNumberSupplier<Integer>() {
+            @Override
+            protected Integer mapFrom(Number value) {
+                return value.intValue();
+            }
+        });
+    }
+
+    static List<Long> sampleLongs() {
+        return sampleValues(new RandomNumberSupplier<Long>() {
+            @Override
+            protected Long mapFrom(Number value) {
+                return value.longValue();
+            }
+        });
     }
 }
