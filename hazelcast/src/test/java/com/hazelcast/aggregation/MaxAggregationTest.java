@@ -123,4 +123,21 @@ public class MaxAggregationTest {
 
         assertThat(result, is(equalTo(expectation)));
     }
+
+    @Test(timeout = 60000)
+    public void testComparableMax() throws Exception {
+
+        List<String> values = TestDoubles.sampleStrings();
+        Collections.sort(values);
+
+        String expectation = values.get(values.size()-1);
+
+        Aggregator<String, String, String> aggregation = Aggregators.comparableMax();
+        for (String value : values) {
+            aggregation.accumulate(TestDoubles.createEntryWithValue(value));
+        }
+        String result = aggregation.aggregate();
+
+        assertThat(result, is(equalTo(expectation)));
+    }
 }

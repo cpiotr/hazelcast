@@ -123,4 +123,21 @@ public class MinAggregationTest {
 
         assertThat(result, is(equalTo(expectation)));
     }
+
+    @Test(timeout = 60000)
+    public void testComparableMin() throws Exception {
+
+        List<String> values = TestDoubles.sampleStrings();
+        Collections.sort(values);
+
+        String expectation = values.get(0);
+
+        Aggregator<String, String, String> aggregation = Aggregators.comparableMin();
+        for (String value : values) {
+            aggregation.accumulate(TestDoubles.createEntryWithValue(value));
+        }
+        String result = aggregation.aggregate();
+
+        assertThat(result, is(equalTo(expectation)));
+    }
 }

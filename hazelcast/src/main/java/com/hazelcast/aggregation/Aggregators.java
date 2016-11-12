@@ -101,6 +101,11 @@ public final class Aggregators {
         return new MinAggregator<Long, K, V>();
     }
 
+    public static <R extends Comparable, K, V> Aggregator<R, K, V> comparableMin() {
+        return new MinAggregator<R, K, V>();
+    }
+
+
     public static <K, V> Aggregator<BigDecimal, K, V> bigDecimalMax() {
         return new MaxAggregator<BigDecimal, K, V>();
     }
@@ -119,6 +124,10 @@ public final class Aggregators {
 
     public static <K, V> Aggregator<Long, K, V> longMax() {
         return new MaxAggregator<Long, K, V>();
+    }
+
+    public static <R extends Comparable, K, V> Aggregator<R, K, V> comparableMax() {
+        return new MaxAggregator<R, K, V>();
     }
 
     public static <K, V> Aggregator<Long, K, V> count() {
