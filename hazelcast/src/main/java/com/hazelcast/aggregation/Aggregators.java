@@ -23,6 +23,7 @@ import com.hazelcast.aggregation.impl.BigIntegerSumAggregator;
 import com.hazelcast.aggregation.impl.DoubleAverageAggregator;
 import com.hazelcast.aggregation.impl.DoubleSumAggregator;
 import com.hazelcast.aggregation.impl.LongSumAggregator;
+import com.hazelcast.aggregation.impl.MinAggregator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -74,5 +75,25 @@ public final class Aggregators {
 
     public static <K, V> Aggregator<Long, K, V> longSum() {
         return new LongSumAggregator<K, V>();
+    }
+
+    public static <K, V> Aggregator<BigDecimal, K, V> bigDecimalMin() {
+        return new MinAggregator<BigDecimal, K, V>();
+    }
+
+    public static <K, V> Aggregator<BigInteger, K, V> bigIntegerMin() {
+        return new MinAggregator<BigInteger, K, V>();
+    }
+
+    public static <K, V> Aggregator<Double, K, V> doubleMin() {
+        return new MinAggregator<Double, K, V>();
+    }
+
+    public static <K, V> Aggregator<Integer, K, V> integerMin() {
+        return new MinAggregator<Integer, K, V>();
+    }
+
+    public static <K, V> Aggregator<Long, K, V> longMin() {
+        return new MinAggregator<Long, K, V>();
     }
 }
