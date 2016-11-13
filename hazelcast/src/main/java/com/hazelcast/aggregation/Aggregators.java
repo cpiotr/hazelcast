@@ -32,9 +32,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Set;
 
-/**
+/**@SuppressWarnings("checkstyle:methodcount")
+
  * A utility class to create {@link com.hazelcast.aggregation.Aggregator} instances.
  */
+@SuppressWarnings("checkstyle:methodcount")
 public final class Aggregators {
 
     private Aggregators() {
