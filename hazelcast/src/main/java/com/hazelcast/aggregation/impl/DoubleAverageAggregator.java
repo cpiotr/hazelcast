@@ -37,8 +37,8 @@ public class DoubleAverageAggregator<K, V> extends AbstractAggregator<Double, K,
     @Override
     public void accumulate(Map.Entry<K, V> entry) {
         count++;
-        Number extractedValue = (Number) extract(entry);
-        sum += extractedValue.doubleValue();
+        Double extractedValue = (Double) extract(entry);
+        sum += extractedValue;
     }
 
     @Override

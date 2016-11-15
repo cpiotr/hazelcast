@@ -6,10 +6,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-class TestDoubles {
+final class TestDoubles {
     public static final int NUMBER_OF_SAMPLE_VALUES = 10000;
 
     static <T> Map.Entry<T, T> createEntryWithValue(T value) {
@@ -72,5 +73,18 @@ class TestDoubles {
     public static List<String> sampleStrings() {
         String loremIpsum = "Lorem ipsum dolor sit amet consectetur adipiscing elit";
         return Arrays.asList(loremIpsum.split(" "));
+    }
+
+    private TestDoubles() {
+        // Utility class
+    }
+
+    public static Collection<Float> sampleFloats() {
+        return sampleValues(new RandomNumberSupplier<Float>() {
+            @Override
+            protected Float mapFrom(Number value) {
+                return value.floatValue();
+            }
+        });
     }
 }

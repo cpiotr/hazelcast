@@ -20,32 +20,32 @@ import com.hazelcast.aggregation.Aggregator;
 
 import java.util.Map;
 
-public class DoubleSumAggregator<K, V> extends AbstractAggregator<Double, K, V> {
+public class IntegerSumAggregator<K, V> extends AbstractAggregator<Long, K, V> {
 
-    private double sum;
+    private long sum;
 
-    public DoubleSumAggregator() {
+    public IntegerSumAggregator() {
         super();
     }
 
-    public DoubleSumAggregator(String attributePath) {
+    public IntegerSumAggregator(String attributePath) {
         super(attributePath);
     }
 
     @Override
     public void accumulate(Map.Entry<K, V> entry) {
-        Double extractedValue = (Double) extract(entry);
+        Integer extractedValue = (Integer) extract(entry);
         sum += extractedValue;
     }
 
     @Override
     public void combine(Aggregator aggregator) {
-        DoubleSumAggregator longSumAggregator = (DoubleSumAggregator) aggregator;
-        this.sum += longSumAggregator.sum;
+        IntegerSumAggregator integerSumAggregator = (IntegerSumAggregator) aggregator;
+        this.sum += integerSumAggregator.sum;
     }
 
     @Override
-    public Double aggregate() {
+    public Long aggregate() {
         return sum;
     }
 

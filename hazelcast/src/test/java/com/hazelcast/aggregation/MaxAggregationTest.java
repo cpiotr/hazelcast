@@ -39,7 +39,7 @@ public class MaxAggregationTest {
 
     public static final double ERROR = 1e-8;
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testBigDecimalMax() throws Exception {
 
         List<BigDecimal> values = TestDoubles.sampleBigDecimals();
@@ -47,7 +47,7 @@ public class MaxAggregationTest {
 
         BigDecimal expectation = values.get(values.size()-1);
 
-        Aggregator<BigDecimal, BigDecimal, BigDecimal> aggregation = Aggregators.bigDecimalMax();
+        Aggregator<BigDecimal, BigDecimal, BigDecimal> aggregation = MaxAggregators.bigDecimalMax();
         for (BigDecimal value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -56,7 +56,7 @@ public class MaxAggregationTest {
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testBigIntegerMax() throws Exception {
 
         List<BigInteger> values = TestDoubles.sampleBigIntegers();
@@ -64,7 +64,7 @@ public class MaxAggregationTest {
 
         BigInteger expectation = values.get(values.size()-1);
 
-        Aggregator<BigInteger, BigInteger, BigInteger> aggregation = Aggregators.bigIntegerMax();
+        Aggregator<BigInteger, BigInteger, BigInteger> aggregation = MaxAggregators.bigIntegerMax();
         for (BigInteger value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -73,7 +73,7 @@ public class MaxAggregationTest {
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testDoubleMax() throws Exception {
 
         List<Double> values = TestDoubles.sampleDoubles();
@@ -81,7 +81,7 @@ public class MaxAggregationTest {
 
         double expectation = values.get(values.size()-1);
 
-        Aggregator<Double, Double, Double> aggregation = Aggregators.doubleMax();
+        Aggregator<Double, Double, Double> aggregation = MaxAggregators.doubleMax();
         for (Double value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -90,7 +90,7 @@ public class MaxAggregationTest {
         assertThat(result, is(closeTo(expectation, ERROR)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testIntegerMax() throws Exception {
 
         List<Integer> values = TestDoubles.sampleIntegers();
@@ -98,7 +98,7 @@ public class MaxAggregationTest {
 
         long expectation = values.get(values.size()-1);
 
-        Aggregator<Integer, Integer, Integer> aggregation = Aggregators.integerMax();
+        Aggregator<Integer, Integer, Integer> aggregation = MaxAggregators.integerMax();
         for (Integer value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -107,7 +107,7 @@ public class MaxAggregationTest {
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testLongMax() throws Exception {
 
         List<Long> values = TestDoubles.sampleLongs();
@@ -115,7 +115,7 @@ public class MaxAggregationTest {
 
         long expectation = values.get(values.size()-1);
 
-        Aggregator<Long, Long, Long> aggregation = Aggregators.longMax();
+        Aggregator<Long, Long, Long> aggregation = MaxAggregators.longMax();
         for (Long value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -124,7 +124,7 @@ public class MaxAggregationTest {
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testComparableMax() throws Exception {
 
         List<String> values = TestDoubles.sampleStrings();
@@ -132,7 +132,7 @@ public class MaxAggregationTest {
 
         String expectation = values.get(values.size()-1);
 
-        Aggregator<String, String, String> aggregation = Aggregators.comparableMax();
+        Aggregator<String, String, String> aggregation = MaxAggregators.comparableMax();
         for (String value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }

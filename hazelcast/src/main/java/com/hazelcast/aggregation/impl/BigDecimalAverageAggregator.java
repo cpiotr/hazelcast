@@ -54,7 +54,8 @@ public class BigDecimalAverageAggregator<K, V> extends AbstractAggregator<BigDec
         if (count == 0) {
             return null;
         }
-        return sum.divide(BigDecimal.valueOf(count));
+        return sum.divide(
+                BigDecimal.valueOf(count));
     }
 
 }

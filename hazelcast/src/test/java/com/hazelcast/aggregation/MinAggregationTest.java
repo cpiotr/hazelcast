@@ -39,7 +39,7 @@ public class MinAggregationTest {
 
     public static final double ERROR = 1e-8;
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testBigDecimalMin() throws Exception {
 
         List<BigDecimal> values = TestDoubles.sampleBigDecimals();
@@ -47,7 +47,7 @@ public class MinAggregationTest {
 
         BigDecimal expectation = values.get(0);
 
-        Aggregator<BigDecimal, BigDecimal, BigDecimal> aggregation = Aggregators.bigDecimalMin();
+        Aggregator<BigDecimal, BigDecimal, BigDecimal> aggregation = MinAggregators.bigDecimalMin();
         for (BigDecimal value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -56,7 +56,7 @@ public class MinAggregationTest {
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testBigIntegerMin() throws Exception {
 
         List<BigInteger> values = TestDoubles.sampleBigIntegers();
@@ -64,7 +64,7 @@ public class MinAggregationTest {
 
         BigInteger expectation = values.get(0);
 
-        Aggregator<BigInteger, BigInteger, BigInteger> aggregation = Aggregators.bigIntegerMin();
+        Aggregator<BigInteger, BigInteger, BigInteger> aggregation = MinAggregators.bigIntegerMin();
         for (BigInteger value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -73,7 +73,7 @@ public class MinAggregationTest {
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testDoubleMin() throws Exception {
 
         List<Double> values = TestDoubles.sampleDoubles();
@@ -81,7 +81,7 @@ public class MinAggregationTest {
 
         double expectation = values.get(0);
 
-        Aggregator<Double, Double, Double> aggregation = Aggregators.doubleMin();
+        Aggregator<Double, Double, Double> aggregation = MinAggregators.doubleMin();
         for (Double value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -90,7 +90,7 @@ public class MinAggregationTest {
         assertThat(result, is(closeTo(expectation, ERROR)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testIntegerMin() throws Exception {
 
         List<Integer> values = TestDoubles.sampleIntegers();
@@ -98,7 +98,7 @@ public class MinAggregationTest {
 
         long expectation = values.get(0);
 
-        Aggregator<Integer, Integer, Integer> aggregation = Aggregators.integerMin();
+        Aggregator<Integer, Integer, Integer> aggregation = MinAggregators.integerMin();
         for (Integer value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -107,7 +107,7 @@ public class MinAggregationTest {
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testLongMin() throws Exception {
 
         List<Long> values = TestDoubles.sampleLongs();
@@ -115,7 +115,7 @@ public class MinAggregationTest {
 
         long expectation = values.get(0);
 
-        Aggregator<Long, Long, Long> aggregation = Aggregators.longMin();
+        Aggregator<Long, Long, Long> aggregation = MinAggregators.longMin();
         for (Long value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -124,7 +124,7 @@ public class MinAggregationTest {
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testComparableMin() throws Exception {
 
         List<String> values = TestDoubles.sampleStrings();
@@ -132,7 +132,7 @@ public class MinAggregationTest {
 
         String expectation = values.get(0);
 
-        Aggregator<String, String, String> aggregation = Aggregators.comparableMin();
+        Aggregator<String, String, String> aggregation = MinAggregators.comparableMin();
         for (String value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }

@@ -20,27 +20,27 @@ import com.hazelcast.aggregation.Aggregator;
 
 import java.util.Map;
 
-public class DoubleSumAggregator<K, V> extends AbstractAggregator<Double, K, V> {
+public class FloatingPointSumAggregator<K, V> extends AbstractAggregator<Double, K, V> {
 
     private double sum;
 
-    public DoubleSumAggregator() {
+    public FloatingPointSumAggregator() {
         super();
     }
 
-    public DoubleSumAggregator(String attributePath) {
+    public FloatingPointSumAggregator(String attributePath) {
         super(attributePath);
     }
 
     @Override
     public void accumulate(Map.Entry<K, V> entry) {
-        Double extractedValue = (Double) extract(entry);
-        sum += extractedValue;
+        Number extractedValue = (Number) extract(entry);
+        sum += extractedValue.doubleValue();
     }
 
     @Override
     public void combine(Aggregator aggregator) {
-        DoubleSumAggregator longSumAggregator = (DoubleSumAggregator) aggregator;
+        FloatingPointSumAggregator longSumAggregator = (FloatingPointSumAggregator) aggregator;
         this.sum += longSumAggregator.sum;
     }
 

@@ -25,6 +25,7 @@ import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.closeTo;
@@ -38,14 +39,14 @@ public class AvgAggregationTest {
 
     public static final double ERROR = 1e-8;
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testBigDecimalAvg() throws Exception {
 
         List<BigDecimal> values = TestDoubles.sampleBigDecimals();
         BigDecimal expectation = Sums.sumBigDecimals(values);
         expectation = expectation.divide(BigDecimal.valueOf(values.size()));
 
-        Aggregator<BigDecimal, BigDecimal, BigDecimal> aggregation = Aggregators.bigDecimalAvg();
+        Aggregator<BigDecimal, BigDecimal, BigDecimal> aggregation = AverageAggregators.bigDecimalAvg();
         for (BigDecimal value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -54,31 +55,31 @@ public class AvgAggregationTest {
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testBigIntegerAvg() throws Exception {
 
         List<BigInteger> values = TestDoubles.sampleBigIntegers();
 
-        BigInteger expectation = Sums.sumBigIntegers(values)
-                .divide(BigInteger.valueOf(values.size()));
+        BigDecimal expectation = new BigDecimal(Sums.sumBigIntegers(values))
+                .divide(BigDecimal.valueOf(values.size()));
 
-        Aggregator<BigInteger, BigInteger, BigInteger> aggregation = Aggregators.bigIntegerAvg();
+        Aggregator<BigDecimal, BigInteger, BigInteger> aggregation = AverageAggregators.bigIntegerAvg();
         for (BigInteger value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
-        BigInteger result = aggregation.aggregate();
+        BigDecimal result = aggregation.aggregate();
 
         assertThat(result, is(equalTo(expectation)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testDoubleAvg() throws Exception {
 
         List<Double> values = TestDoubles.sampleDoubles();
 
         double expectation = Sums.sumDoubles(values) / (double) values.size();
 
-        Aggregator<Double, Double, Double> aggregation = Aggregators.doubleAvg();
+        Aggregator<Double, Double, Double> aggregation = AverageAggregators.doubleAvg();
         for (Double value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -87,14 +88,14 @@ public class AvgAggregationTest {
         assertThat(result, is(closeTo(expectation, ERROR)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testIntegerAvg() throws Exception {
 
         List<Integer> values = TestDoubles.sampleIntegers();
 
         double expectation = (double) Sums.sumIntegers(values) / (double) values.size();
 
-        Aggregator<Double, Integer, Integer> aggregation = Aggregators.integerAvg();
+        Aggregator<Double, Integer, Integer> aggregation = AverageAggregators.integerAvg();
         for (Integer value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
@@ -103,15 +104,34 @@ public class AvgAggregationTest {
         assertThat(result, is(closeTo(expectation, ERROR)));
     }
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testLongAvg() throws Exception {
 
         List<Long> values = TestDoubles.sampleLongs();
 
         double expectation = (double) Sums.sumLongs(values) / (double) values.size();
 
-        Aggregator<Double, Long, Long> aggregation = Aggregators.longAvg();
+        Aggregator<Double, Long, Long> aggregation = AverageAggregators.longAvg();
         for (Long value : values) {
+            aggregation.accumulate(TestDoubles.createEntryWithValue(value));
+        }
+        double result = aggregation.aggregate();
+
+        assertThat(result, is(closeTo(expectation, ERROR)));
+    }
+
+    @Test(timeout = TimeoutInMillis.MINUTE)
+    public void testGenericAvg() throws Exception {
+
+        List<Number> values = new ArrayList<Number>();
+        values.addAll(TestDoubles.sampleLongs());
+        values.addAll(TestDoubles.sampleDoubles());
+        values.addAll(TestDoubles.sampleIntegers());
+
+        double expectation = (double) Sums.sumFloatingPointNumbers(values) / (double) values.size();
+
+        Aggregator<Double, Number, Number> aggregation = AverageAggregators.genericAvg();
+        for (Number value : values) {
             aggregation.accumulate(TestDoubles.createEntryWithValue(value));
         }
         double result = aggregation.aggregate();

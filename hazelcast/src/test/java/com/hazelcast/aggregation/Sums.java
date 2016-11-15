@@ -4,7 +4,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
-class Sums {
+final class Sums {
+    private Sums() {
+        // Utility class
+    }
+
     static BigDecimal sumBigDecimals(List<BigDecimal> values) {
         BigDecimal sum = BigDecimal.ZERO;
         for (BigDecimal value : values) {
@@ -41,6 +45,22 @@ class Sums {
         double sum = 0L;
         for (double value : values) {
             sum += value;
+        }
+        return sum;
+    }
+
+    public static double sumFloatingPointNumbers(List<? extends Number> values) {
+        double sum = 0L;
+        for (Number value : values) {
+            sum += value.doubleValue();
+        }
+        return sum;
+    }
+
+    public static long sumFixedPointNumbers(List<? extends Number> values) {
+        long sum = 0L;
+        for (Number value : values) {
+            sum += value.longValue();
         }
         return sum;
     }

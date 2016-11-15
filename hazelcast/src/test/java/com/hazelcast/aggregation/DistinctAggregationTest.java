@@ -36,7 +36,7 @@ import static org.junit.Assert.assertThat;
 @Category({QuickTest.class, ParallelTest.class})
 public class DistinctAggregationTest {
 
-    @Test(timeout = 60000)
+    @Test(timeout = TimeoutInMillis.MINUTE)
     public void testCountAggregator() throws Exception {
 
         List<String> values = repeatTimes(3, TestDoubles.sampleStrings());

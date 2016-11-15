@@ -18,10 +18,11 @@ package com.hazelcast.aggregation.impl;
 
 import com.hazelcast.aggregation.Aggregator;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-public class BigIntegerAverageAggregator<K, V> extends AbstractAggregator<BigInteger, K, V> {
+public class BigIntegerAverageAggregator<K, V> extends AbstractAggregator<BigDecimal, K, V> {
 
     private BigInteger sum = BigInteger.ZERO;
     private long count;
@@ -50,11 +51,12 @@ public class BigIntegerAverageAggregator<K, V> extends AbstractAggregator<BigInt
     }
 
     @Override
-    public BigInteger aggregate() {
+    public BigDecimal aggregate() {
         if (count == 0) {
             return null;
         }
-        return sum.divide(BigInteger.valueOf(count));
+        return new BigDecimal(sum)
+                .divide(BigDecimal.valueOf(count));
     }
 
 }

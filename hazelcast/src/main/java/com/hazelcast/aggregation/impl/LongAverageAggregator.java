@@ -20,33 +20,40 @@ import com.hazelcast.aggregation.Aggregator;
 
 import java.util.Map;
 
-public class DoubleSumAggregator<K, V> extends AbstractAggregator<Double, K, V> {
+public class LongAverageAggregator<K, V> extends AbstractAggregator<Double, K, V> {
 
-    private double sum;
+    private long sum;
 
-    public DoubleSumAggregator() {
+    private long count;
+
+    public LongAverageAggregator() {
         super();
     }
 
-    public DoubleSumAggregator(String attributePath) {
+    public LongAverageAggregator(String attributePath) {
         super(attributePath);
     }
 
     @Override
     public void accumulate(Map.Entry<K, V> entry) {
-        Double extractedValue = (Double) extract(entry);
+        count++;
+        Long extractedValue = (Long) extract(entry);
         sum += extractedValue;
     }
 
     @Override
     public void combine(Aggregator aggregator) {
-        DoubleSumAggregator longSumAggregator = (DoubleSumAggregator) aggregator;
-        this.sum += longSumAggregator.sum;
+        LongAverageAggregator longAverageAggregator = (LongAverageAggregator) aggregator;
+        this.sum += longAverageAggregator.sum;
+        this.count += longAverageAggregator.count;
     }
 
     @Override
     public Double aggregate() {
-        return sum;
+        if (count == 0) {
+            return null;
+        }
+        return ((double) sum / (double) count);
     }
 
 }

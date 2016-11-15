@@ -34,8 +34,8 @@ public class LongSumAggregator<K, V> extends AbstractAggregator<Long, K, V> {
 
     @Override
     public void accumulate(Map.Entry<K, V> entry) {
-        Number extractedValue = (Number) extract(entry);
-        sum += extractedValue.longValue();
+        Long extractedValue = (Long) extract(entry);
+        sum += extractedValue;
     }
 
     @Override
