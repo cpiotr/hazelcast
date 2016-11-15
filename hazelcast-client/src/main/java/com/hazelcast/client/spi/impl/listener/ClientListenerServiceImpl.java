@@ -114,10 +114,6 @@ public abstract class ClientListenerServiceImpl implements ClientListenerService
         ClientExecutionServiceImpl.shutdownExecutor("registrationExecutor", registrationExecutor, logger);
     }
 
-    public StripedExecutor getEventExecutor() {
-        return eventExecutor;
-    }
-
     public void start() {
     }
 
@@ -151,6 +147,11 @@ public abstract class ClientListenerServiceImpl implements ClientListenerService
         public int getKey() {
             return clientMessage.getPartitionId();
         }
+    }
+
+    //called from ee.
+    public StripedExecutor getEventExecutor() {
+        return eventExecutor;
     }
 
     //For Testing

@@ -82,7 +82,8 @@ public class ServerCompatibilityNullTest_1_3 {
             assertTrue(isEqual(aString, params.clientHazelcastVersion));
         }
         {
-            ClientMessage clientMessage = ClientAuthenticationCustomCodec.encodeResponse(aByte, null, null, null, aByte, aString, null);
+            ClientMessage clientMessage = ClientAuthenticationCustomCodec
+                    .encodeResponse(aByte, null, null, null, aByte, aString, null);
             int length = inputStream.readInt();
             byte[] bytes = new byte[length];
             inputStream.read(bytes);

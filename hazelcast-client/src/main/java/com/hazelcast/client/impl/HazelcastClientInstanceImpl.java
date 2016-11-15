@@ -16,7 +16,7 @@
 
 package com.hazelcast.client.impl;
 
-import com.hazelcast.cache.impl.nearcache.NearCacheManager;
+import com.hazelcast.internal.nearcache.NearCacheManager;
 import com.hazelcast.cardinality.CardinalityEstimator;
 import com.hazelcast.cardinality.impl.CardinalityEstimatorService;
 import com.hazelcast.client.ClientExtension;
@@ -375,16 +375,6 @@ public class HazelcastClientInstanceImpl implements HazelcastInstance, Serializa
         lifecycleService.setStarted();
         invocationService.start();
         connectionManager.start();
-        try {
-            clusterService.start();
-        } catch (Exception e) {
-            lifecycleService.shutdown();
-            throw ExceptionUtil.rethrow(e);
-        }
-        listenerService.start();
-        loadBalancer.init(getCluster(), config);
-        partitionService.start();
-        clientExtension.afterStart(this);
 
         diagnostics.start();
         diagnostics.register(
@@ -398,6 +388,16 @@ public class HazelcastClientInstanceImpl implements HazelcastInstance, Serializa
 
         metricsRegistry.collectMetrics(listenerService);
 
+        try {
+            clusterService.start();
+        } catch (Exception e) {
+            lifecycleService.shutdown();
+            throw ExceptionUtil.rethrow(e);
+        }
+        listenerService.start();
+        loadBalancer.init(getCluster(), config);
+        partitionService.start();
+        clientExtension.afterStart(this);
     }
 
     public MetricsRegistryImpl getMetricsRegistry() {

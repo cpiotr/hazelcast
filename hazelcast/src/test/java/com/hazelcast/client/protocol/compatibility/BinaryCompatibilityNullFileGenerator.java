@@ -52,7 +52,8 @@ public class BinaryCompatibilityNullFileGenerator {
             outputStream.write(clientMessage.buffer().byteArray(), 0, clientMessage.getFrameLength());
         }
         {
-            ClientMessage clientMessage = ClientAuthenticationCustomCodec.encodeResponse(aByte, null, null, null, aByte, aString, null);
+            ClientMessage clientMessage = ClientAuthenticationCustomCodec
+                    .encodeResponse(aByte, null, null, null, aByte, aString, null);
             outputStream.writeInt(clientMessage.getFrameLength());
             outputStream.write(clientMessage.buffer().byteArray(), 0, clientMessage.getFrameLength());
         }

@@ -65,10 +65,10 @@ public class ServerCompatibilityTest_1_1 {
         }
         {
             ClientMessage clientMessage = ClientAuthenticationCodec
-                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString, null);
+                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString, members);
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.3), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.3), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -92,10 +92,10 @@ public class ServerCompatibilityTest_1_1 {
         }
         {
             ClientMessage clientMessage = ClientAuthenticationCustomCodec
-                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString, null);
+                    .encodeResponse(aByte, anAddress, aString, aString, aByte, aString, members);
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.3), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.3), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -593,8 +593,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = MapLockCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -618,8 +618,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = MapTryLockCodec.encodeResponse(aBoolean);
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -657,8 +657,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = MapUnlockCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -1272,8 +1272,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = MapForceUnlockCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -1662,8 +1662,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = MultiMapLockCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -1687,8 +1687,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = MultiMapTryLockCodec.encodeResponse(aBoolean);
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -1726,8 +1726,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = MultiMapUnlockCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -1748,8 +1748,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = MultiMapForceUnlockCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -2821,8 +2821,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = LockLockCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -2843,8 +2843,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = LockUnlockCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -2864,8 +2864,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = LockForceUnlockCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -2888,8 +2888,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = LockTryLockCodec.encodeResponse(aBoolean);
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -2912,8 +2912,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = ConditionAwaitCodec.encodeResponse(aBoolean);
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
@@ -2935,8 +2935,8 @@ public class ServerCompatibilityTest_1_1 {
         {
             ClientMessage clientMessage = ConditionBeforeAwaitCodec.encodeResponse();
             int length = inputStream.readInt();
-            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the
-            // message (version 1.2), only the bytes after frame length fields are compared
+            // Since the test is generated for protocol version (1.1) which is earlier than latest change in the message
+            // (version 1.2), only the bytes after frame length fields are compared
             int frameLength = clientMessage.getFrameLength();
             assertTrue(frameLength >= length);
             inputStream.skipBytes(FRAME_LEN_FIELD_SIZE);
